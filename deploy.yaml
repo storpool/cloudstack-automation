@@ -1,0 +1,43 @@
+---
+- name: Provision infrastructure
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Generating unique name
+      set_fact:
+        deployment_name: "lab-cs-{{ environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
+    - name: Instantiating OpenNebula service
+      one_service:
+        template_id: "{{ one_template_id }}"
+        service_name: "{{ ansible_facts.deployment_name }}"
+        custom_attrs:
+          ENVIRONMENT: "{{ environment }}"
+          STORPOOL_VERSION: "{{ sp_version }}"
+          CLOUDSTACK_VERSION: "{{ cs_version }}"
+          STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+        wait: true
+    - name: Creating AWX inventory
+      tower_inventory:
+        name: "{{ ansible_facts.deployment_name }}"
+        organization: Default
+    - name: Creating management inventory group
+      block:
+        - name: Retrieve management VMs from OpenNebula
+          one_vm:
+            attributes:
+              ENVIRONMENT: "{{ environment }}"
+              STORPOOL_VERSION: "{{ sp_version }}"
+              CLOUDSTACK_VERSION: "{{ cs_version }}"
+              STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+              ROLE_NAME: management
+            register: management_hosts
+        - name: Adding management VMs to inventory
+          tower_host:
+            inventory: "{{ ansible_facts.deployment_name }}"
+            name: "{{ item.vm_name }}"
+          loop: "{{ management_hosts.tagged_instances }}"
+        - name: Adding management VMs to management group
+          tower_group:
+            inventory: "{{ ansible_facts.deployment_name }}"
+            name: management
+            hosts: "{{ management_hosts.tagged_instances|map(attribute='vm_name') }}"
