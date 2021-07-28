@@ -5,17 +5,16 @@
   tasks:
     - name: Generating unique name
       set_fact:
-        deployment_name: "lab-cs-{{ environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
+        deployment_name: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
     - name: Instantiating OpenNebula service
       one_service:
         template_id: "{{ one_template_id }}"
         service_name: "{{ ansible_facts.deployment_name }}"
         custom_attrs:
-          ENVIRONMENT: "{{ environment }}"
+          ENVIRONMENT: "{{ lab_environment }}"
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
-        wait: true
     - name: Creating AWX inventory
       tower_inventory:
         name: "{{ ansible_facts.deployment_name }}"
@@ -25,7 +24,7 @@
         - name: Retrieve management VMs from OpenNebula
           one_vm:
             attributes:
-              ENVIRONMENT: "{{ environment }}"
+              ENVIRONMENT: "{{ lab_environment }}"
               STORPOOL_VERSION: "{{ sp_version }}"
               CLOUDSTACK_VERSION: "{{ cs_version }}"
               STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
