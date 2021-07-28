@@ -9,7 +9,7 @@
     - name: Instantiating OpenNebula service
       one_service:
         template_id: "{{ one_template_id }}"
-        service_name: "{{ ansible_facts.deployment_name }}"
+        service_name: "{{ deployment_name }}"
         custom_attrs:
           ENVIRONMENT: "{{ lab_environment }}"
           STORPOOL_VERSION: "{{ sp_version }}"
@@ -17,7 +17,7 @@
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
     - name: Creating AWX inventory
       tower_inventory:
-        name: "{{ ansible_facts.deployment_name }}"
+        name: "{{ deployment_name }}"
         organization: Default
     - name: Creating management inventory group
       block:
@@ -32,11 +32,11 @@
             register: management_hosts
         - name: Adding management VMs to inventory
           tower_host:
-            inventory: "{{ ansible_facts.deployment_name }}"
+            inventory: "{{ deployment_name }}"
             name: "{{ item.vm_name }}"
           loop: "{{ management_hosts.tagged_instances }}"
         - name: Adding management VMs to management group
           tower_group:
-            inventory: "{{ ansible_facts.deployment_name }}"
+            inventory: "{{ deployment_name }}"
             name: management
             hosts: "{{ management_hosts.tagged_instances|map(attribute='vm_name') }}"
