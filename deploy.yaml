@@ -15,6 +15,7 @@
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+        wait: true
     - name: Creating AWX inventory
       tower_inventory:
         name: "{{ deployment_name }}"
