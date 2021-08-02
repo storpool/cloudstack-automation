@@ -36,9 +36,12 @@
           tower_host:
             inventory: "{{ deployment_name }}"
             name: "{{ item.vm_name }}"
+            variables:
+              ansible_host: "{{ item.networks[0].ip }}"
+              ansible_user: centos
           loop: "{{ management_hosts.instances }}"
         - name: Adding management VMs to management group
           tower_group:
             inventory: "{{ deployment_name }}"
             name: management
-            hosts: "{{ management_hosts.tagged_instances|map(attribute='vm_name') }}"
+            hosts: "{{ management_hosts.instances|map(attribute='vm_name') }}"
