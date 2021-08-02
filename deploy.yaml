@@ -36,7 +36,7 @@
           tower_host:
             inventory: "{{ deployment_name }}"
             name: "{{ item.vm_name }}"
-          loop: "{{ management_hosts.tagged_instances }}"
+          loop: "{{ management_hosts.instances }}"
         - name: Adding management VMs to management group
           tower_group:
             inventory: "{{ deployment_name }}"
