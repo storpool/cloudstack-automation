@@ -31,7 +31,7 @@
               CLOUDSTACK_VERSION: "{{ cs_version }}"
               STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
               ROLE_NAME: management
-            register: management_hosts
+          register: management_hosts
         - name: Adding management VMs to inventory
           tower_host:
             inventory: "{{ deployment_name }}"
