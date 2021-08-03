@@ -1,5 +1,5 @@
 ---
-- name: "Retrieving {{ service_service_role_name }} VMs from OpenNebula"
+- name: "Retrieving {{ service_role_name }} VMs from OpenNebula"
   one_vm:
     attributes:
       ENVIRONMENT: "{{ lab_environment }}"
@@ -11,11 +11,13 @@
 - name: "Adding {{ service_role_name }} VMs to inventory"
   tower_host:
     inventory: "{{ deployment_name }}"
-    name: "{{ item.vm_name }}"
+    name: "{{ instance.vm_name }}"
     variables:
-      ansible_host: "{{ item.networks[0].ip }}"
+      ansible_host: "{{ instance.networks[0].ip }}"
       ansible_user: centos
   loop: "{{ hosts.instances }}"
+  loop_control:
+    loop_var: instance
 - name: "Adding {{ service_role_name }} VMs to management group"
   tower_group:
     inventory: "{{ deployment_name }}"
