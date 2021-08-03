@@ -27,6 +27,7 @@
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+          ANSIBLE_PUBLIC_KEY: "{{ lookup('file', '/tmp/' + deployment_name + '-keypair.pub') }}"
         unique: true
         wait: true
     - name: Creating AWX inventory
