@@ -19,7 +19,7 @@
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
-- name: "Adding {{ service_role_name }} VMs to management group"
+- name: "Adding {{ service_role_name }} VMs to {{ service_role_name }} group"
   tower_group:
     inventory: "{{ deployment_name }}"
     name: "{{ service_role_name }}"
