@@ -45,3 +45,14 @@
       loop: "{{ one_service.roles|map(attribute='name') }}"
       vars:
         service_role_name: "{{ item }}"
+    - name: Creating AWX Deployment Job template
+      tower_job_template:
+        name: "{{ deployment_name }}"
+        organization: "{{ owner }}"
+        project: CloudStack Environment Automation
+        playbook: provision.yaml
+        inventory: "{{ deployment_name }}"
+        credentials:
+          - "{{ deployment_name }}"
+        become_enabled: true
+        verbosity: 2
