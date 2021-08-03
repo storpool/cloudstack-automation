@@ -15,6 +15,7 @@
     variables:
       ansible_host: "{{ instance.networks[0].ip }}"
       ansible_user: centos
+      one_vm_id: "{{ instance.vm_id }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
