@@ -44,4 +44,4 @@
         name: populate_inventory
       loop: "{{ one_service.roles|map(attribute='name') }}"
       vars:
-        role_name: "{{ item }}"
+        service_role_name: "{{ item }}"
