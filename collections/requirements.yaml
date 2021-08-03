@@ -2,3 +2,4 @@
 collections:
   - awx.awx
   - community.general
+  - community.crypto
