@@ -31,7 +31,7 @@
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
-          ANSIBLE_PUBLIC_KEY: "{{ (keypair.public_key + ' ' + keypair.comment) | b64encode }}"
+          ANSIBLE_PUBLIC_KEY: "{{ keypair.public_key | b64encode }}"
         unique: true
         wait: true
     - name: Creating AWX inventory
