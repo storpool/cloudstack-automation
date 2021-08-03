@@ -45,4 +45,3 @@
       loop: "{{ one_service.roles|map(attribute='name') }}"
       vars:
         role_name: "{{ item }}"
-      when: one_service.changed
