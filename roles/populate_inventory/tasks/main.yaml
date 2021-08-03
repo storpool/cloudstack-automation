@@ -1,0 +1,23 @@
+---
+- name: "Retrieving {{ role_name }} VMs from OpenNebula"
+  one_vm:
+    attributes:
+      ENVIRONMENT: "{{ lab_environment }}"
+      STORPOOL_VERSION: "{{ sp_version }}"
+      CLOUDSTACK_VERSION: "{{ cs_version }}"
+      STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+      ROLE_NAME: "{{ role_name }}"
+  register: hosts
+- name: "Adding {{ role_name }} VMs to inventory"
+  tower_host:
+    inventory: "{{ deployment_name }}"
+    name: "{{ item.vm_name }}"
+    variables:
+      ansible_host: "{{ item.networks[0].ip }}"
+      ansible_user: centos
+  loop: "{{ hosts.instances }}"
+- name: "Adding {{ role_name }} VMs to management group"
+  tower_group:
+    inventory: "{{ deployment_name }}"
+    name: "{{ role_name }}"
+    hosts: "{{ hosts.instances|map(attribute='vm_name') }}"

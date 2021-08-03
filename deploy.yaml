@@ -39,27 +39,10 @@
       tower_inventory:
         name: "{{ deployment_name }}"
         organization: "{{ owner }}"
-    - name: Creating management inventory group
-      block:
-        - name: Retrieve management VMs from OpenNebula
-          one_vm:
-            attributes:
-              ENVIRONMENT: "{{ lab_environment }}"
-              STORPOOL_VERSION: "{{ sp_version }}"
-              CLOUDSTACK_VERSION: "{{ cs_version }}"
-              STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
-              ROLE_NAME: management
-          register: management_hosts
-        - name: Adding management VMs to inventory
-          tower_host:
-            inventory: "{{ deployment_name }}"
-            name: "{{ item.vm_name }}"
-            variables:
-              ansible_host: "{{ item.networks[0].ip }}"
-              ansible_user: centos
-          loop: "{{ management_hosts.instances }}"
-        - name: Adding management VMs to management group
-          tower_group:
-            inventory: "{{ deployment_name }}"
-            name: management
-            hosts: "{{ management_hosts.instances|map(attribute='vm_name') }}"
+    - name: Populating AWX inventory with VMs
+      include_role:
+        name: populate_inventory
+      loop: "{{ one_service.roles|map(attribute='name') }}"
+      vars:
+        role_name: "{{ item }}"
+      when: one_service.changed
