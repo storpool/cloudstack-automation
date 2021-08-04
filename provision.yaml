@@ -54,8 +54,7 @@
       block:
         - name: Debugging cloudstack unique cluster names
           debug:
-            var:
-              regexed_names: "{{ roles_names | map('regex_search', 'cluster_[a-z][0-9]') }}"
+            var: "{{ roles_names | map('regex_search', 'cluster_[a-z][0-9]') }}"
         - name: Determining CloudStack cluster groups
           set_fact:
             cloudstack_clusters: "{{ roles_names | map('regex_search', 'cluster_[a-z][0-9]') | unique | list }}"
