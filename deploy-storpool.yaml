@@ -1,5 +1,20 @@
 ---
-- name: Creating StorPool configuration
+- name: Generating StorPool configuration
   hosts: "{{ cluster_group }}"
   roles:
-    -
+    - generate-storpool-config
+
+- name: Installing StorPool hyperconverged node
+  hosts: "{{ cluster_group }}_block_server_mgmt"
+  roles:
+    - install-storpool-block-server-mgmt
+
+- name: Installing StorPool client node
+  hosts: "{{ cluster_group }}_block_server_mgmt"
+  roles:
+    - install-storpool-block
+
+- name: Starting StorPool services
+  hosts: "{{ cluster_group }}"
+  roles:
+    - start-storpool-services
