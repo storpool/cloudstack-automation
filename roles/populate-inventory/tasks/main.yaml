@@ -16,6 +16,7 @@
       ansible_host: "{{ instance.networks[0].ip }}"
       ansible_user: centos
       one_vm_id: "{{ instance.vm_id }}"
+      sp_services: "{{ 'cluster' in service_role_name | ternary(service_role_name.split('_')[2:], none) }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
