@@ -46,7 +46,7 @@
         roles_names: "{{ one_service.roles | map(attribute='name') }}"
     - name: Populating AWX inventory with VMs
       include_role:
-        name: populate_inventory
+        name: populate-inventory
       loop: "{{ roles_names }}"
       vars:
         service_role_name: "{{ item }}"
