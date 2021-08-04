@@ -21,9 +21,13 @@
       ansible_user: centos
       one_vm_id: "{{ instance.vm_id }}"
       sp_services: "{{ ('cluster' in service_role_name) | ternary(service_role_name.split('_')[2:], None) }}"
+      sp_ourid: "{{ node_id | int + 1 }}"
+      sp_interface1_ip: "{{ instance.networks[1].ip }}"
+      sp_interface2_ip: "{{ instance.networks[2].ip }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
+    index_var: node_id
 - name: "Adding {{ service_role_name }} VMs to {{ service_role_name }} group"
   tower_group:
     inventory: "{{ deployment_name }}"

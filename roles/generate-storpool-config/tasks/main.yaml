@@ -1,3 +1,5 @@
 ---
 - name: Generating storpool.conf
   template:
+    src: storpool.conf.j2
+    dest: /etc/storpool.conf
