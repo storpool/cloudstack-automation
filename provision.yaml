@@ -2,6 +2,8 @@
 - name: Provision infrastructure
   hosts: localhost
   gather_facts: false
+  vars:
+    cloudstack_clusters: []
   tasks:
     - name: Generating unique name
       set_fact:
@@ -42,15 +44,32 @@
     - name: Populating AWX inventory with VMs
       include_role:
         name: populate_inventory
-      loop: "{{ one_service.roles|map(attribute='name') }}"
+      loop: "{{ one_service.roles | map(attribute='name') }}"
       vars:
         service_role_name: "{{ item }}"
     - name: Creating parent groups
       block:
+        - name: Determining CloudStack cluster groups
+          set_fact:
+            cloudstack_clusters: "{{ one_service.roles | map('regex_search', 'cluster_[a-z][0-9]') | unique }}"
         - name: Creating cluster groups
           tower_group:
-            name: ""
+            name: "{{ cloudstack_cluster }}"
             inventory: "{{ deployment_name }}"
+            children: "{{ one_service.roles | map ('regex_search', cloudstack_cluster + '.*') }}"
+          loop: "{{ cloudstack_clusters }}"
+          loop_control:
+            loop_var: cloudstack_cluster
+        - name: Creating storpool_nodes group
+          tower_group:
+            name: storpool_nodes
+            inventory: "{{ deployment_name }}"
+            children: "{{ cloudstack_clusters }}"
+        - name: Creating cloudstack_hypervisors group
+          tower_group:
+            name: cloudstack_hypervisors
+            inventory: "{{ deployment_name }}"
+            children: "{{ cloudstack_clusters }}"
     - name: Creating StorPool deployment Job template
       tower_job_template:
         name: "{{ deployment_name }}"
