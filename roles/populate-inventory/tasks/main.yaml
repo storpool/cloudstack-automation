@@ -8,6 +8,10 @@
       STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
       ROLE_NAME: "{{ service_role_name }}"
   register: hosts
+- name: Debug sp_services host variable
+  debug:
+    var: "{{ ('cluster' in service_role_name) | ternary(service_role_name.split('_')[2:], None) }}"
+    verbosity: 2
 - name: "Adding {{ service_role_name }} VMs to inventory"
   tower_host:
     inventory: "{{ deployment_name }}"
@@ -16,7 +20,7 @@
       ansible_host: "{{ instance.networks[0].ip }}"
       ansible_user: centos
       one_vm_id: "{{ instance.vm_id }}"
-      sp_services: "{{ 'cluster' in service_role_name | ternary(service_role_name.split('_')[2:], None) }}"
+      sp_services: "{{ ('cluster' in service_role_name) | ternary(service_role_name.split('_')[2:], None) }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
