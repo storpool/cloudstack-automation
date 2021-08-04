@@ -1,0 +1,5 @@
+---
+- name: Creating StorPool configuration
+  hosts: "{{ cluster_group }}"
+  roles:
+    -

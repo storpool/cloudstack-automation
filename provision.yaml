@@ -78,7 +78,7 @@
         name: "{{ deployment_name }}"
         organization: "{{ owner }}"
         project: CloudStack Environment Automation
-        playbook: deploy_storpool.yaml
+        playbook: deploy-storpool.yaml
         inventory: "{{ deployment_name }}"
         credentials:
           - "{{ deployment_name }}"
