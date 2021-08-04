@@ -10,7 +10,7 @@
   register: hosts
 - name: Debug sp_services host variable
   debug:
-    var: "{{ ('cluster' in service_role_name) | ternary(service_role_name.split('_')[2:], None) }}"
+    msg: "StorPool services detected: {{ ('cluster' in service_role_name) | ternary(service_role_name.split('_')[2:], None) }}"
     verbosity: 2
 - name: "Adding {{ service_role_name }} VMs to inventory"
   tower_host:
