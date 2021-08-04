@@ -59,7 +59,7 @@
           tower_group:
             name: "{{ cloudstack_cluster }}"
             inventory: "{{ deployment_name }}"
-            children: "{{ roles_names | map ('regex_search', cloudstack_cluster + '.*') }}"
+            children: "{{ roles_names | map ('regex_search', cloudstack_cluster + '.*') | select('string') }}"
           loop: "{{ cloudstack_clusters }}"
           loop_control:
             loop_var: cloudstack_cluster
