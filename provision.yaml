@@ -41,17 +41,20 @@
       tower_inventory:
         name: "{{ deployment_name }}"
         organization: "{{ owner }}"
+    - name: Creating a list of service role names
+      set_fact:
+        roles_names: "{{ one_service.roles | map(attribute='name') }}"
     - name: Populating AWX inventory with VMs
       include_role:
         name: populate_inventory
-      loop: "{{ one_service.roles | map(attribute='name') }}"
+      loop: "{{ roles_names }}"
       vars:
         service_role_name: "{{ item }}"
     - name: Creating parent groups
       block:
         - name: Determining CloudStack cluster groups
           set_fact:
-            cloudstack_clusters: "{{ one_service.roles | map('regex_search', 'cluster_[a-z][0-9]') | list | unique | list }}"
+            cloudstack_clusters: "{{ roles_names | map('regex_search', 'cluster_[a-z][0-9]') | unique | list }}"
         - name: Creating cluster groups
           tower_group:
             name: "{{ cloudstack_cluster }}"
