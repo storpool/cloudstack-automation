@@ -51,7 +51,7 @@
       block:
         - name: Determining CloudStack cluster groups
           set_fact:
-            cloudstack_clusters: "{{ one_service.roles | map('regex_search', 'cluster_[a-z][0-9]') | unique }}"
+            cloudstack_clusters: "{{ one_service.roles | map('regex_search', 'cluster_[a-z][0-9]') | list | unique | list }}"
         - name: Creating cluster groups
           tower_group:
             name: "{{ cloudstack_cluster }}"
