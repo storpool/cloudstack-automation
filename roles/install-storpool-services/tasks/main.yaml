@@ -1,0 +1,27 @@
+---
+- name: Creating StorPool installation directory
+  file:
+    path: "/home/centos/storpool/"
+    state: directory
+    owner: centos
+    group: centos
+    mode: 0644
+
+- name: Downloading StorPool installation tools
+  get_url:
+    url: "https://vault.storpool.com/{{ tool_name }}"
+    dest: "/home/centos/storpool/"
+    owner: centos
+    group: centos
+    mode: 0755
+  loop:
+    - getpackage.py
+    - install_modules_helper.py
+
+- name: Downloading StorPool
+  command: "/home/centos/storpool/getpackage.py -g {{ sp_version }} -w /home/centos/storpool/ -t release"
+  args:
+    creates: "/home/centos/storpool/storpool-{{ sp_version }}*.tar.gz"
+
+- name: Installing StorPool services
+  command: "/home/centos/storpool/install_modules_helper.py -g {{ sp_version }} -m {{ '@' + ( sp_services | join ('_') ) }} "
