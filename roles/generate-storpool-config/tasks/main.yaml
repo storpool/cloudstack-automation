@@ -1,4 +1,7 @@
 ---
+- name: Setting hostname
+  hostname:
+    name: "{{ node_hostname }}"
 - name: Generating storpool.conf
   template:
     src: storpool.conf.j2
