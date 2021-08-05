@@ -6,23 +6,31 @@
   roles:
     - generate-storpool-config
 
-- name: Installing StorPool hyperconverged node
+- name: Installing StorPool converged node
   hosts: "{{ cluster_group }}_block_server_mgmt"
   become: true
   become_method: sudo
   roles:
-    - install-storpool-block-server-mgmt
+    - install-storpool-services
+    - initialize-drives
+    - configure-cgroups
+  vars:
+    converged: true
 
 - name: Installing StorPool client node
-  hosts: "{{ cluster_group }}_block_server_mgmt"
+  hosts: "{{ cluster_group }}_block"
   become: true
   become_method: sudo
   roles:
-    - install-storpool-block
+    - install-storpool-services
+    - configure-cgroups
+  vars:
+    converged: false
 
 - name: Starting StorPool services
   hosts: "{{ cluster_group }}"
   become: true
   become_method: sudo
-  roles:
-    - start-storpool-services
+  tasks:
+    - name: Starting StorPool services
+      command: /usr/sbin/storpool_ctl start
