@@ -65,7 +65,7 @@
               sp_auth_token: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=16') }}"
               sp_cluster_name: "{{ storpool_clusters[cloudstack_cluster].name }}"
               sp_cluster_id: "{{ storpool_clusters[cloudstack_cluster].id }}"
-              sp_expected_nodes: "{{ one_service.roles | selectattr('name', cloudstack_cluster + '_block_server_mgmt')[0].ids | length }}"
+              sp_expected_nodes: "{{ one_service.roles | selectattr('name', cloudstack_cluster + '_block_server_mgmt') | map(attribute='ids') | length }}"
               sp_rauth_token: "{{ storpool_clusters[cloudstack_cluster].rauth_token }}"
           loop: "{{ cloudstack_clusters }}"
           loop_control:
