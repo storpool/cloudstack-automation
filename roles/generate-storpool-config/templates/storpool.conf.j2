@@ -4,8 +4,26 @@ SP_CLUSTER_ID={{ sp_cluster_id }}
 SP_EXPECTED_NODES={{ sp_expected_nodes }}
 
 SP_API_HOST={{ sp_api_host }}
-SP_API_INTERFACE={{ sp_api_interface }}
-SP_AUTH_TOKEN={{ lookup('password', '/dev/null chars=acsii_lowercase,digits length=16') }}
+SP_AUTH_TOKEN={{ sp_auth_token }}
 
 SP_RAUTH_TOKEN={{ sp_rauth_token }}
 
+{% for node_name in groups[cs_cluster] %}
+{% set node = hostvars[node_name] %}
+[{{ node.ansible_hostname }}]
+SP_OURID={{ sp_ourid }}
+{% for interface in node.ansible_interfaces %}
+{% if 'mgmt' in node.sp_services and node.ansible_facts[interface].macaddress == sp_api_interface_mac %}
+SP_API_IFACE={{ interface }}
+{% endif %}
+{% if node.ansible_facts[interface].macaddress == sp_interface1_mac %}
+SP_IFACE1_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
+{% endif %}
+{% if node.ansible_facts[interface].macaddress == sp_interface2_mac %}
+SP_IFACE2_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
+{% endif %}
+{% endfor %}
+{% if 'server' not in sp_services %}
+SP_NODE_NON_VOTING=1
+{% endif %}
+{% endfor %}
