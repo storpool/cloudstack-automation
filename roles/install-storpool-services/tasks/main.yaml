@@ -17,6 +17,8 @@
   loop:
     - getpackage.py
     - install_modules_helper.py
+  loop_control:
+    loop_var: tool_name
 
 - name: Downloading StorPool
   command: "/home/centos/storpool/getpackage.py -g {{ sp_version }} -w /home/centos/storpool/ -t release"
