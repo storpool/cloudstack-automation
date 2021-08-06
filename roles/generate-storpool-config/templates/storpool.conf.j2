@@ -26,5 +26,4 @@ SP_IFACE2_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts
 {% if 'server' not in sp_services %}
 SP_NODE_NON_VOTING=1
 {% endif %}
-{% endif %}
 {% endfor %}
