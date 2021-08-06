@@ -20,7 +20,7 @@
         hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
       tower_host:
         inventory: "{{ deployment_name }}"
-        name: "{{ hostname + '-' + (node_id | int + 1) }}"
+        name: "{{ hostname + '-' + ((node_id + 1) | str) }}"
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
