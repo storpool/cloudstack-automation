@@ -24,7 +24,7 @@
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
-          node_hostname: "{{ hostname + '-' + (node_id | int + 1 | str) }}"
+          node_hostname: "{{ hostname + '-' + ((node_id + 1) | str) }}"
           one_vm_id: "{{ instance.vm_id }}"
           sp_services: "{{ service_role_name.split('_')[2:] }}"
           sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
