@@ -33,7 +33,7 @@
       loop_control:
         loop_var: instance
         index_var: node_id
-  when: "{{ 'cluster' in service_role_name }}"
+  when: 'cluster' in service_role_name
 
 - name: Adding CloudStack management VMs to inventory
   tower_host:
@@ -42,14 +42,14 @@
     variables:
       ansible_host: "{{ instance.networks[0].ip }}"
       ansible_user: centos
-      node_hostname: "{{ 'lab-cs-' + lab_environment + '-' management }}"
+      node_hostname: "{{ 'lab-cs-' + lab_environment + '-management' }}"
       one_vm_id: "{{ instance.vm_id }}"
       sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
     index_var: node_id
-  when: "{{ service_role_name == 'management' }}"
+  when: 'management' in service_role_name
 
 - name: "Adding {{ service_role_name }} VMs to {{ service_role_name }} group"
   tower_group:
