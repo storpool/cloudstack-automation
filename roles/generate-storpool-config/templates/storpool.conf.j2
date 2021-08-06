@@ -11,14 +11,14 @@ SP_RAUTH_TOKEN={{ sp_rauth_token }}
 {% for node_name in groups[cs_cluster] %}
 {% set node = hostvars[node_name] %}
 [{{ node.ansible_hostname }}]
-SP_OURID={{ sp_ourid }}
-{% for interface in node.ansible_facts['interfaces'] %}
+SP_OURID={{ node.sp_ourid }}
+{% for interface in node.ansible_interfaces %}
 {% if 'macaddress' in node.ansible_facts[interface]  %}
-{% if 'mgmt' in node.sp_services and node.ansible_facts[interface].macaddress == sp_api_interface_mac %}
+{% if 'mgmt' in node.sp_services and node.ansible_facts[interface].macaddress == node.sp_api_interface_mac %}
 SP_API_IFACE={{ interface }}
-{% elif node.ansible_facts[interface].macaddress == sp_interface1_mac %}
+{% elif node.ansible_facts[interface].macaddress == node.sp_interface1_mac %}
 SP_IFACE1_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
-{% elif node.ansible_facts[interface].macaddress == sp_interface2_mac %}
+{% elif node.ansible_facts[interface].macaddress == node.sp_interface2_mac %}
 SP_IFACE2_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
 {% endif %}
 {% endif %}
