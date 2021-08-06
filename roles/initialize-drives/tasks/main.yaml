@@ -5,5 +5,10 @@
 
 - name: Retrieving available drives
   set_fact:
-    available_drives: ""
+    available_drives: "{{ lookup('dict', ansible_devices) | map(attribute='key') | reject('in', mounted_drives) }}"
+
+- name: Show list of available drives
+  debug:
+    msg: "Available drives to StorPool {{ available_drives }}"
+    verbosity: 3
 
