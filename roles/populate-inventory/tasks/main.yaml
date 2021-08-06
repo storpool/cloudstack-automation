@@ -20,14 +20,13 @@
         hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
       tower_host:
         inventory: "{{ deployment_name }}"
-        name: "{{ hostname + '-' + node_id }}"
+        name: "{{ hostname + '-' + (node_id | int + 1) }}"
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
-          node_hostname: "{{ hostname + '-' + node_id }}"
+          node_hostname: "{{ hostname + '-' + (node_id | int + 1) }}"
           one_vm_id: "{{ instance.vm_id }}"
           sp_services: "{{ service_role_name.split('_')[2:] }}"
-          sp_ourid: "{{ node_id | int + 1 }}"
           sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
           sp_interface1_mac: "{{ instance.networks[1].mac }}"
           sp_interface2_mac: "{{ instance.networks[2].mac }}"
