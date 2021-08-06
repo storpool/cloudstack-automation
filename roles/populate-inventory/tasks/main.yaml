@@ -16,13 +16,15 @@
         msg: "StorPool services detected: {{ service_role_name.split('_')[2:] }}"
         verbosity: 3
     - name: "Adding {{ service_role_name }} VMs to inventory"
+      vars:
+        hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
       tower_host:
         inventory: "{{ deployment_name }}"
-        name: "{{ instance.vm_name }}"
+        name: "{{ hostname + '-' + node_id }}"
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
-          node_hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
+          node_hostname: "{{ hostname + '-' + node_id }}"
           one_vm_id: "{{ instance.vm_id }}"
           sp_services: "{{ service_role_name.split('_')[2:] }}"
           sp_ourid: "{{ node_id | int + 1 }}"
