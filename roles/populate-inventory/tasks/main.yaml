@@ -20,7 +20,7 @@
     - name: "Adding {{ service_role_name }} VMs to inventory"
       tower_host:
         inventory: "{{ deployment_name }}"
-        name: "{{ instance.vm_name }}"
+        name: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
