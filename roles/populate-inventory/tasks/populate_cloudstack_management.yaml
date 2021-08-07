@@ -9,10 +9,10 @@
       node_hostname: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
       one_vm_id: "{{ instance.vm_id }}"
       sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
-    loop: "{{ hosts.instances }}"
-    loop_control:
-      loop_var: instance
-      index_var: node_id
+  loop: "{{ hosts.instances }}"
+  loop_control:
+    loop_var: instance
+    index_var: node_id
 - name: Adding management VMs to management group"
   tower_group:
     inventory: "{{ deployment_name }}"
