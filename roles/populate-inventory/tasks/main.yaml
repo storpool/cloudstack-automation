@@ -12,11 +12,13 @@
 - name: Adding StorPool VMs to inventory
   vars:
     base_hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
+    hosts: "{{ hosts }}"
   include_tasks: populate_storpool_nodes.yaml
   when: '"cluster" in service_role_name'
 
 - name: Adding CloudStack management VMs to inventory
   vars:
     base_hostname: "{{ 'lab-cs-' + lab_environment + '-management' }}"
+    hosts: "{{ hosts }}"
   include_tasks: populate_cloudstack_management.yaml
   when: '"management" in service_role_name'
