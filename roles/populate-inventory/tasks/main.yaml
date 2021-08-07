@@ -42,6 +42,7 @@
         preserve_existing_hosts: true
       loop: "{{ hosts.instances }}"
       loop_control:
+        loop_var: instance
         index_var: node_id
   when: '"cluster" in service_role_name'
 
@@ -52,7 +53,7 @@
     - name: Adding management VM to AWX
       tower_host:
         inventory: "{{ deployment_name }}"
-        name: "{{ instance.vm_name }}"
+        name: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
         variables:
           ansible_host: "{{ instance.networks[0].ip }}"
           ansible_user: centos
@@ -71,5 +72,6 @@
         preserve_existing_hosts: true
       loop: "{{ hosts.instances }}"
       loop_control:
+        loop_var: instance
         index_var: node_id
   when: '"management" in service_role_name'
