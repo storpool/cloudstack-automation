@@ -24,7 +24,8 @@
   tower_group:
     inventory: "{{ deployment_name }}"
     name: "{{ service_role_name }}"
-    hosts: "{{ [ base_hostname + '-' + ((node_id + 1) | string) ] }}"
+    hosts:
+      - "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
     preserve_existing_hosts: true
   loop: "{{ hosts.instances }}"
   loop_control:
