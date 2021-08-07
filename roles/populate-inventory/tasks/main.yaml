@@ -12,66 +12,11 @@
 - name: Adding StorPool VMs to inventory
   vars:
     base_hostname: "{{ 'lab-cs-' + lab_environment + '-' + (service_role_name | replace('_', '-')) }}"
-  block:
-    - name: Debug StorPool services detection
-      debug:
-        msg: "StorPool services detected: {{ service_role_name.split('_')[2:] }}"
-        verbosity: 3
-    - name: "Adding {{ service_role_name }} VMs to inventory"
-      tower_host:
-        inventory: "{{ deployment_name }}"
-        name: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
-        variables:
-          ansible_host: "{{ instance.networks[0].ip }}"
-          ansible_user: centos
-          node_hostname: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
-          one_vm_id: "{{ instance.vm_id }}"
-          sp_services: "{{ service_role_name.split('_')[2:] }}"
-          sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
-          sp_interface1_mac: "{{ instance.networks[1].mac }}"
-          sp_interface2_mac: "{{ instance.networks[2].mac }}"
-      loop: "{{ hosts.instances }}"
-      loop_control:
-        loop_var: instance
-        index_var: node_id
-    - name: "Adding {{ service_role_name }} VMs to {{ service_role_name }} group"
-      tower_group:
-        inventory: "{{ deployment_name }}"
-        name: "{{ service_role_name }}"
-        hosts: "{{ [ base_hostname + '-' + ((node_id + 1) | string) ] }}"
-        preserve_existing_hosts: true
-      loop: "{{ hosts.instances }}"
-      loop_control:
-        loop_var: instance
-        index_var: node_id
+  include_tasks: populate_storpool_nodes.yaml
   when: '"cluster" in service_role_name'
 
 - name: Adding CloudStack management VMs to inventory
   vars:
     base_hostname: "{{ 'lab-cs-' + lab_environment + '-management' }}"
-  block:
-    - name: Adding management VM to AWX
-      tower_host:
-        inventory: "{{ deployment_name }}"
-        name: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
-        variables:
-          ansible_host: "{{ instance.networks[0].ip }}"
-          ansible_user: centos
-          node_hostname: "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
-          one_vm_id: "{{ instance.vm_id }}"
-          sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
-        loop: "{{ hosts.instances }}"
-        loop_control:
-          loop_var: instance
-          index_var: node_id
-    - name: Adding management VMs to management group"
-      tower_group:
-        inventory: "{{ deployment_name }}"
-        name: "{{ service_role_name }}"
-        hosts: "{{ [ base_hostname + '-' + ((node_id + 1) | string) ] }}"
-        preserve_existing_hosts: true
-      loop: "{{ hosts.instances }}"
-      loop_control:
-        loop_var: instance
-        index_var: node_id
+  include_tasks: populate_cloudstack_management.yaml
   when: '"management" in service_role_name'
