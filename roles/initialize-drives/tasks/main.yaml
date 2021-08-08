@@ -1,7 +1,7 @@
 ---
 - name: Fetching mounted drives
   set_fact:
-    mounted_drives: "{{ ansible_mounts | map(attribute='device') }}"
+    mounted_drives: "{{ ansible_mounts | map(attribute='device') | map('regex_search', '[s|v][a-z]{2,}') }}"
 
 - name: Retrieving available drives
   set_fact:
