@@ -1,6 +1,6 @@
 ---
 - name: Running storpool-cg conf
-  command: "/usr/sbin/storpool_cg conf CONVERGED={{'1' if converged else '0'}} SYSTEM_LIMIT=2 USER_LIMIT=1"
+  command: "/usr/sbin/storpool_cg conf CONVERGED={{'1' if converged else '0'}} SYSTEM_LIMIT=2G USER_LIMIT=1G"
 
 - name: Restarting cgconfig
   systemd:
