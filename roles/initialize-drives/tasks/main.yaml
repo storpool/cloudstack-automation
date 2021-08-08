@@ -14,7 +14,7 @@
 
 - name: Formating disks
   parted:
-    device: "{{ disk }}"
+    device: "/dev/{{ disk }}"
     number: 1
     state: present
     label: gpt
