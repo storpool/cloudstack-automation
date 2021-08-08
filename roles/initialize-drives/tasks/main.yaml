@@ -31,7 +31,7 @@
   command:
     argv:
       - /usr/sbin/storpool_initdisk
-      - "{{ '-I' if (diskId + 1) == 1 and sp_node_id == 1 else ''}}"
+      - "{{ '-I' if (diskId + 1) == 1 and (storpool_showconf_sp_ourid.stdout | int) == 1 else ''}}"
       - "{{ (storpool_showconf_sp_ourid.stdout | int) * 100 + diskId + 1 }}"
       - "/dev/{{ disk }}1"
   loop: "{{ available_drives }}"
