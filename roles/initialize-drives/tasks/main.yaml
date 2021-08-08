@@ -29,7 +29,7 @@
 
 - name: Setting sp_node_id fact
   set_fact:
-    sp_node_id: "{{ storpool_showconf_sp_ourid.stdout | int }}"
+    sp_node_id: "{{ int(storpool_showconf_sp_ourid.stdout) }}"
 
 - name: Initializing disks
   command:
