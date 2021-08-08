@@ -27,16 +27,12 @@
   command: /usr/sbin/storpool_showconf -n SP_OURID
   register: storpool_showconf_sp_ourid
 
-- name: Setting sp_node_id fact
-  set_fact:
-    sp_node_id: "{{ int(storpool_showconf_sp_ourid.stdout) }}"
-
 - name: Initializing disks
   command:
     argv:
       - /usr/sbin/storpool_initdisk
       - "{{ '-I' if (diskId + 1) == 1 and sp_node_id == 1 else ''}}"
-      - "{{ sp_node_id * 100 + diskId + 1 }}"
+      - "{{ (storpool_showconf_sp_ourid.stdout | int) * 100 + diskId + 1 }}"
       - "/dev/{{ disk }}1"
   loop: "{{ available_drives }}"
   loop_control:
