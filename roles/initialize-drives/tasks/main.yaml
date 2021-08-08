@@ -15,6 +15,7 @@
 - name: Formating disks
   parted:
     device: "{{ disk }}"
+    number: 1
     state: present
     label: gpt
     part_start: 2MiB
