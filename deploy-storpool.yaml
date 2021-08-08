@@ -13,6 +13,7 @@
   roles:
     - install-storpool-services
     - initialize-drives
+    - configure-networking
     - configure-cgroups
   vars:
     converged: true
@@ -23,6 +24,7 @@
   become_method: sudo
   roles:
     - install-storpool-services
+    - configure-networking
     - configure-cgroups
   vars:
     converged: false

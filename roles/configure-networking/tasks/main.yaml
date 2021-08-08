@@ -1,0 +1,8 @@
+---
+- name: Disabling hardware accelaration
+  command:
+    argv:
+      - /usr/lib/storpool/vf-genconf
+      - -d
+      - -m 1500
+    creates: /etc/vf-udevhelper.conf
