@@ -1,14 +1,14 @@
 ---
 - name: Fetching mounted drives
   set_fact:
-    mounted_drives: "{{ ansible_mounts | map(attribute='device') | map('regex_search', '[s|v][a-z]{2,}')}}"
+    mounted_drives: "{{ ansible_mounts | map(attribute='device') }}"
 
 - name: Retrieving available drives
   set_fact:
-    available_drives: "{{ lookup('dict', ansible_devices) | map(attribute='key') | reject('in', mounted_drives) }}"
+    available_drives: "{{ lookup('dict', ansible_devices) | map(attribute='key') | reject('in', mounted_drives) | map('regex_search', '[s|v][a-z]{2,}') }}"
 
 - name: Show list of available drives
   debug:
     msg: "Available drives to StorPool {{ available_drives }}"
-    verbosity: 3
+    verbosity: 2
 
