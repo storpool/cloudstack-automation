@@ -5,7 +5,7 @@
 
 - name: Retrieving available drives
   set_fact:
-    available_drives: "{{ lookup('dict', ansible_devices) | map(attribute='key') | reject('in', mounted_drives) | map('regex_search', '[s|v][a-z]{2,}') }}"
+    available_drives: "{{ lookup('dict', ansible_devices) | map(attribute='key') | reject('in', mounted_drives) | map('regex_search', '[s|v][a-z]{2,}') | select('string') }}"
 
 - name: Show list of available drives
   debug:
