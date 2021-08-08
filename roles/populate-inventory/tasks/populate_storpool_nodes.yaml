@@ -26,7 +26,7 @@
     name: "{{ service_role_name }}"
     hosts:
       - "{{ base_hostname + '-' + ((node_id + 1) | string) }}"
-    preserve_existing_hosts: true
+    preserve_existing_hosts: "{{ node_id > 1 }}"
   loop: "{{ hosts.instances }}"
   loop_control:
     loop_var: instance
