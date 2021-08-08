@@ -1,4 +1,9 @@
 ---
+- name: Creating /etc/cgconfig.d
+  file:
+    path: /etc/cgconfig.d
+    state: directory
+
 - name: Running storpool-cg conf
   command: "/usr/sbin/storpool_cg conf CONVERGED={{'1' if converged else '0'}} SYSTEM_LIMIT=2G USER_LIMIT=1G"
 
