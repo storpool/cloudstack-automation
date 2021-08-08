@@ -12,3 +12,24 @@
     msg: "Available drives to StorPool {{ available_drives }}"
     verbosity: 2
 
+- name: Formating disks
+  parted:
+    device: "{{ disk }}"
+    state: present
+    label: gpt
+    part_start: 2MiB
+  loop: "{{ available_drives }}"
+  loop_control:
+    loop_var: disk
+
+- name: Initializing disks
+  command:
+    argv:
+      - /usr/sbin/storpool_initdisk
+      - "{{ '-I' if diskId == 1 else ''}}"
+      - "{{ diskId }}"
+      - "/dev/{{ disk }}1"
+  loop: "{{ available_drives }}"
+  loop_control:
+    loop_var: disk
+    index_var: diskId
