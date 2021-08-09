@@ -37,9 +37,7 @@
         dest: /home/centos/
 
     - name: Creating RPMs to distribute and install
-      command:
+      shell: "/bin/bash ./package.sh -d centos7"
+      args:
         chdir: "/home/centos/apache-cloudstack-{{ cs_version }}-src/packaging/"
-        argv:
-          - /bin/bash
-          - "/home/centos/apache-cloudstack-{{ cs_version }}-src/packaging/package.sh"
-          - -d centos7
+
