@@ -34,7 +34,8 @@
         version: "{{ cs_version }}"
 
     - name: Creating RPMs to distribute and install
-      shell: "/bin/bash ./package.sh -d centos7"
+      shell: FLAGS=-DskipTests ./package.sh -d centos7
       args:
-        chdir: "/home/centos/cloudstack-src/packaging/"
+        chdir: /home/centos/cloudstack-src/packaging/
+        executable: /bin/bash
 
