@@ -38,6 +38,7 @@
 
     - name: Creating RPMs to distribute and install
       command:
+        chdir: "/home/centos/apache-cloudstack-{{ cs_version }}-src/packaging/"
         argv:
           - /bin/bash
           - "/home/centos/apache-cloudstack-{{ cs_version }}-src/packaging/package.sh"
