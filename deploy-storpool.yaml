@@ -34,5 +34,7 @@
   become: true
   become_method: sudo
   tasks:
+    - name: Enabling StorPool services
+      command: /usr/sbin/storpool_ctl enable
     - name: Starting StorPool services
       command: /usr/sbin/storpool_ctl start
