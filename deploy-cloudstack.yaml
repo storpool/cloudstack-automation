@@ -1,0 +1,42 @@
+---
+- name: "Building CloudStack {{ cs_version }}"
+  hosts: management
+  tasks:
+    - name: "Downloading CloudStack {{ cs_version }} source code archive"
+      get_url:
+        url: "https://archive.apache.org/dist/cloudstack/releases/{{ cs_version }}/releases/apache-cloudstack-{{ cs_version }}-src.tar.bz2"
+        dest: /home/centos/
+
+    - name: Extracting source code archive
+      unarchive:
+        src: "/home/centos/apache-cloudstack-{{ cs_version }}-src.tar.bz2"
+        remote_src: true
+        dest: /home/centos/
+
+    - name: Adding MySQL community repo
+      yum_repository:
+        name: mysql-community
+        description: MySQL Community connectors
+        baseurl: http://repo.mysql.com/yum/mysql-connectors-community/el/$releasever/$basearch/
+        enabled: true
+        gpgkey: http://repo.mysql.com/RPM-GPG-KEY-mysql
+        gpgcheck: true
+
+    - name: Installing CloudStack build dependencies
+      dnf:
+        name:
+          - "@Development Tools"
+          - maven
+          - genisoimage
+          - mysql
+          - mysql-server
+          - ws-commons-utils
+          - MySQL-python
+          - mysql-connector-python
+
+    - name: Creating RPMs to distribute and install
+      command:
+        argv:
+          - /bin/bash
+          - "/home/centos/apache-cloudstack-{{ cs_version }}-src/packaging/package.sh"
+          - -d centos7
