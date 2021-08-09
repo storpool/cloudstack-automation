@@ -62,7 +62,7 @@
             children: "{{ roles_names | map ('regex_search', cloudstack_cluster + '.*') | select('string') }}"
             variables:
               cs_cluster: "{{ cloudstack_cluster }}"
-              sp_auth_token: "{{ lookup('password', '/dev/null chars=digits length=32') }}"
+              sp_auth_token: "{{ lookup('password', '/dev/null chars=digits length=8') }}"
               sp_cluster_name: "{{ storpool_clusters[cloudstack_cluster].name }}"
               sp_cluster_id: "{{ storpool_clusters[cloudstack_cluster].id }}"
               sp_expected_nodes: "{{ one_service.roles | selectattr('name', 'eq', cloudstack_cluster + '_block_server_mgmt') | map(attribute='ids') | length }}"
