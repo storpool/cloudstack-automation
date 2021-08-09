@@ -4,7 +4,7 @@
   tasks:
     - name: "Downloading CloudStack {{ cs_version }} source code archive"
       get_url:
-        url: "https://archive.apache.org/dist/cloudstack/releases/{{ cs_version }}/releases/apache-cloudstack-{{ cs_version }}-src.tar.bz2"
+        url: "https://archive.apache.org/dist/cloudstack/releases/{{ cs_version }}/apache-cloudstack-{{ cs_version }}-src.tar.bz2"
         dest: /home/centos/
 
     - name: Extracting source code archive
