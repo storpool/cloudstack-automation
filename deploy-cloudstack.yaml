@@ -1,10 +1,10 @@
 ---
 - name: "Building CloudStack {{ cs_version }}"
   hosts: management
-  become: true
-  become_method: sudo
   tasks:
     - name: Adding MySQL community repo
+      become: true
+      become_method: sudo
       yum_repository:
         name: mysql-community
         description: MySQL Community connectors
@@ -14,6 +14,8 @@
         gpgcheck: true
 
     - name: Installing CloudStack build dependencies
+      become: true
+      become_method: sudo
       yum:
         name:
           - "@Development Tools"
