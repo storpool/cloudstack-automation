@@ -21,7 +21,7 @@
           - maven
           - genisoimage
           - mariadb
-          - ws-commons-utils
+          - ws-commons-util
           - MySQL-python
           - mysql-connector-python
 
