@@ -1,0 +1,71 @@
+---
+- name: Adding MySQL community repo
+  become: true
+  become_method: sudo
+  yum_repository:
+    name: mysql-community
+    description: MySQL Community connectors
+    baseurl: http://repo.mysql.com/yum/mysql-connectors-community/el/$releasever/$basearch/
+    enabled: true
+    gpgkey: http://repo.mysql.com/RPM-GPG-KEY-mysql
+    gpgcheck: true
+
+- name: Installing CloudStack build dependencies
+  become: true
+  become_method: sudo
+  yum:
+    name:
+      - bzip2
+      - "@Development Tools"
+      - maven
+      - genisoimage
+      - mariadb
+      - ws-commons-util
+      - MySQL-python
+      - mysql-connector-python
+      - createrepo
+
+- name: Cloning CloudStack GitHub repository
+  git:
+    repo: https://github.com/apache/cloudstack.git
+    dest: /home/centos/cloudstack-src
+    version: "{{ cs_version }}"
+
+- name: Building RPMs
+  shell: FLAGS=-DskipTests ./package.sh -d centos7
+  args:
+    chdir: /home/centos/cloudstack-src/packaging/
+    executable: /bin/bash
+
+- name: Installing nginx
+  yum:
+    name:
+      - nginx
+    state: present
+
+- name: Configuring nginx
+  include_role:
+    name: nginxinc.nginx_config
+  vars:
+    nginx_config_main_template_enable: true
+    nginx_config_http_template_enable: true
+    nginx_config_http_template:
+      - listen:
+          port: 80
+        locations:
+          - location: /var/www/repo/cloudstack/
+
+- name: Copying RPMs to repository
+  copy:
+    src: /home/centos/cloudstack-src/dist/rpmbuild/RPMS/x86_64/
+    remote_src: true
+    dest: /var/www/repo/cloudstack/
+
+- name: Creating an YUM repository
+  command: createrepo /var/www/repo/cloudstack/
+
+- name: Starting nginx
+  systemd:
+    name: ngingx
+    enabled: true
+    state: started

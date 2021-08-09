@@ -1,5 +1,7 @@
 ---
 collections:
   - awx.awx
+  - ansible.posix
   - community.general
   - community.crypto
+  - nginxinc.nginx_core
