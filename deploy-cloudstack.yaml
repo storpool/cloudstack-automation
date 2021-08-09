@@ -20,8 +20,7 @@
           - "@Development Tools"
           - maven
           - genisoimage
-          - mysql
-          - mysql-server
+          - mariadb
           - ws-commons-utils
           - MySQL-python
           - mysql-connector-python
