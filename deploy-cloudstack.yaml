@@ -18,6 +18,7 @@
       become_method: sudo
       yum:
         name:
+          - bzip2
           - "@Development Tools"
           - maven
           - genisoimage
