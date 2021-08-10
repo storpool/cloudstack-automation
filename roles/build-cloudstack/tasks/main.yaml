@@ -44,6 +44,8 @@
     state: present
 
 - name: Configuring nginx
+  become: true
+  become_method: sudo
   include_role:
     name: nginxinc.nginx_config
   vars:
