@@ -1,6 +1,7 @@
 ---
 - name: "Building CloudStack {{ cs_version }}"
   hosts: management
-  tasks:
+  roles:
+    - build-cloudstack
 
 
