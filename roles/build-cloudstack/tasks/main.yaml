@@ -61,16 +61,14 @@
           enabled: true
 
 - name: Copying RPMs to repository
+  become: true
+  become_method: sudo
   copy:
     src: /home/centos/cloudstack-src/dist/rpmbuild/RPMS/x86_64/
     remote_src: true
     dest: /var/www/repo/cloudstack/
 
 - name: Creating an YUM repository
+  become: true
+  become_method: sudo
   command: createrepo /var/www/repo/cloudstack/
-
-- name: Starting nginx
-  systemd:
-    name: ngingx
-    enabled: true
-    state: started
