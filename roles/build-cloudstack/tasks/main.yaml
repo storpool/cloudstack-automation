@@ -57,9 +57,10 @@
           - listen:
               port: 80
             locations:
-              - location: /var/www/repo/cloudstack/
-            autoindex:
-              enabled: true
+              - location: /
+                root: /var/www/repo/cloudstack/
+                autoindex:
+                  enabled: true
 
 - name: Copying RPMs to repository
   become: true
