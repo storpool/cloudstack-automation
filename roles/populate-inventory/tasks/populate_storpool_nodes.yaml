@@ -14,6 +14,7 @@
       one_vm_id: "{{ instance.vm_id }}"
       sp_services: "{{ service_role_name.split('_')[2:] }}"
       sp_api_interface_mac: "{{ ('mgmt' in service_role_name) | ternary (instance.networks[0].mac, '') }}"
+      sp_converged_node: true
       sp_interface1_mac: "{{ instance.networks[1].mac }}"
       sp_interface2_mac: "{{ instance.networks[2].mac }}"
   loop: "{{ hosts.instances }}"
