@@ -19,7 +19,6 @@
       - "@Development Tools"
       - maven
       - genisoimage
-      - mariadb
       - ws-commons-util
       - MySQL-python
       - mysql-connector-python
@@ -30,14 +29,14 @@
     repo: https://github.com/apache/cloudstack.git
     dest: /home/centos/cloudstack-src
     version: "{{ cs_version }}"
-  when: git_checkout | bool
+  when: cloudstack_git_checkout | bool
 
 - name: Building RPMs
   shell: FLAGS=-DskipTests ./package.sh -d centos7
   args:
     chdir: /home/centos/cloudstack-src/packaging/
     executable: /bin/bash
-  when: build_rpms | bool
+  when: cloudstack_build_packages | bool
 
 - name: Installing nginx
   yum:
@@ -79,3 +78,8 @@
     name: nginx
     state: restarted
     enabled: true
+
+- name: Setting SELinux to permissive
+  selinux:
+    state: permissive
+    policy: targeted
