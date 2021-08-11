@@ -49,7 +49,7 @@
   become: true
   become_method: sudo
   file:
-    src: /etc/nginx/conf.d/
+    path: /etc/nginx/conf.d/
     state: directory
 
 - name: Uploading nginx configuration
