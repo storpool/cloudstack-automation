@@ -4,4 +4,7 @@
   roles:
     - build-cloudstack
 
-
+- name: "Installing CloudStack repository"
+  hosts: all
+  roles:
+    - add-cloudstack-repository
