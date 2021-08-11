@@ -43,24 +43,19 @@
       - nginx
     state: present
 
-- name: Configuring nginx
-  include_role:
-    name: nginxinc.nginx_config
-    apply:
-      become: true
-      become_method: sudo
-  vars:
-    nginx_config_main_template_enable: true
-    nginx_config_http_template_enable: true
-    nginx_config_http_template:
-      - servers:
-          - listen:
-              port: 80
-            locations:
-              - location: /
-                root: /var/www/repo/cloudstack/
-                autoindex:
-                  enabled: true
+- name:
+  become: true
+  become_method: sudo
+  file:
+    src: /etc/nginx/conf.d/
+    state: directory
+
+- name: Uploading nginx configuration
+  become: true
+  become_method: sudo
+  copy:
+    src: repo.conf
+    dest: /etc/nginx/conf.d/cloudstack-repo.conf
 
 - name: Copying RPMs to repository
   become: true
@@ -74,3 +69,9 @@
   become: true
   become_method: sudo
   command: createrepo /var/www/repo/cloudstack/
+
+- name: Restarting nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: true
