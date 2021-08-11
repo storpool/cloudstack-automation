@@ -73,6 +73,8 @@
   command: createrepo /var/www/repo/cloudstack/
 
 - name: Restarting nginx
+  become: true
+  become_method: sudo
   systemd:
     name: nginx
     state: restarted
