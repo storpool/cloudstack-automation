@@ -30,12 +30,14 @@
     repo: https://github.com/apache/cloudstack.git
     dest: /home/centos/cloudstack-src
     version: "{{ cs_version }}"
+  when: git_checkout | bool
 
 - name: Building RPMs
   shell: FLAGS=-DskipTests ./package.sh -d centos7
   args:
     chdir: /home/centos/cloudstack-src/packaging/
     executable: /bin/bash
+  when: build_rpms | bool
 
 - name: Installing nginx
   yum:
@@ -43,7 +45,7 @@
       - nginx
     state: present
 
-- name:
+- name: Creating nginx server config directory
   become: true
   become_method: sudo
   file:

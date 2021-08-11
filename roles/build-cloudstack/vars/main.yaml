@@ -1,0 +1,3 @@
+---
+git_checkout: true
+build_rpms: true
