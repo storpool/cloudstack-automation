@@ -21,7 +21,7 @@
     loop_var: tool_name
 
 - name: Downloading StorPool
-  command: "/home/centos/storpool/getpackage.py -g {{ sp_version }} -w /home/centos/storpool/ -t release"
+  command: "/home/centos/storpool/getpackage.py -g {{ sp_version }} -w /home/centos/storpool/ -t {{ sp_release_target }}"
   args:
     creates: "/home/centos/storpool/storpool-{{ sp_version }}*.tar.gz"
 
