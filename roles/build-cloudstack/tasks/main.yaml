@@ -82,6 +82,8 @@
     enabled: true
 
 - name: Setting SELinux to permissive
+  become: true
+  become_method: sudo
   selinux:
     state: permissive
     policy: targeted
