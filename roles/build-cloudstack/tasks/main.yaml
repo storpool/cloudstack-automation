@@ -39,6 +39,8 @@
   when: cloudstack_build_packages | bool
 
 - name: Installing nginx
+  become: true
+  become_method: sudo
   yum:
     name:
       - nginx
