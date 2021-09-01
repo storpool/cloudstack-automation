@@ -11,6 +11,8 @@
   become: true
   become_method: sudo
   roles:
+    - add-storpool-repo
+    - install-sp-python
     - install-storpool-services
     - initialize-drives
     - configure-networking
@@ -23,6 +25,8 @@
   become: true
   become_method: sudo
   roles:
+    - add-storpool-repo
+    - install-sp-python
     - install-storpool-services
     - configure-networking
     - configure-cgroups
