@@ -5,3 +5,4 @@ collections:
   - community.general
   - community.crypto
   - nginxinc.nginx_core
+  - ngine_io.cloudstack
