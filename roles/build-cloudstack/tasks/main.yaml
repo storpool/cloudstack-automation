@@ -9,6 +9,7 @@
       - genisoimage
       - ws-commons-util
       - createrepo
+      - mysql-connector-python
     state: present
 
 - name: Cloning CloudStack GitHub repository
