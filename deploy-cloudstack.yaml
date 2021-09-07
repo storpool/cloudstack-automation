@@ -7,6 +7,7 @@
 
 - name: "Installing CloudStack repository"
   hosts: all
+  become_method: sudo
   roles:
     - add-cloudstack-repository
 

@@ -1,14 +1,12 @@
 ---
 - name: Adding entry in /etc/hosts to management node
   become: true
-  become_method: sudo
   lineinfile:
     path: /etc/hosts
     line: "{{ cs_management_ip }} cloudstack.repo"
 
 - name: Adding yum repository
   become: true
-  become_method: sudo
   yum_repository:
     file: cloudstack.repo
     name: apache-cloudstack
