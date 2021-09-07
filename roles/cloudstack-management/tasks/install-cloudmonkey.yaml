@@ -1,0 +1,15 @@
+---
+- name: Installing pip
+  become: true
+  package:
+    name:
+      - python2-pip
+      - python-virtualenv
+      - python2-setuptools
+    state: present
+
+- name: Installing cloudmonkey package
+  become: true
+  pip:
+    name:
+      - cloudmonkey
