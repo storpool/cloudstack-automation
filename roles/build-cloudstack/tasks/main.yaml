@@ -1,7 +1,6 @@
 ---
 - name: Adding MySQL community repo
   become: true
-  become_method: sudo
   yum_repository:
     name: mysql-community
     description: MySQL Community connectors
@@ -12,7 +11,6 @@
 
 - name: Installing CloudStack build dependencies
   become: true
-  become_method: sudo
   yum:
     name:
       - bzip2
@@ -41,28 +39,24 @@
 
 - name: Installing nginx
   become: true
-  become_method: sudo
   package:
     name: nginx
     state: present
 
 - name: Creating nginx server config directory
   become: true
-  become_method: sudo
   file:
     path: /etc/nginx/conf.d/
     state: directory
 
 - name: Uploading nginx configuration
   become: true
-  become_method: sudo
   copy:
     src: repo.conf
     dest: /etc/nginx/conf.d/cloudstack-repo.conf
 
 - name: Copying RPMs to repository
   become: true
-  become_method: sudo
   copy:
     src: /home/centos/cloudstack-src/dist/rpmbuild/RPMS/x86_64/
     remote_src: true
@@ -70,12 +64,10 @@
 
 - name: Creating an YUM repository
   become: true
-  become_method: sudo
   command: createrepo /var/www/repo/cloudstack/
 
 - name: Restarting nginx
   become: true
-  become_method: sudo
   systemd:
     name: nginx
     state: restarted
@@ -83,7 +75,6 @@
 
 - name: Setting SELinux to permissive
   become: true
-  become_method: sudo
   selinux:
     state: permissive
     policy: targeted
