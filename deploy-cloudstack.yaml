@@ -8,3 +8,8 @@
   hosts: all
   roles:
     - add-cloudstack-repository
+
+- name: "Installing CloudStack management node"
+  hosts: management
+  roles:
+    - cloudstack-management
