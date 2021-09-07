@@ -1,0 +1,4 @@
+---
+nfs_export_directories:
+  - /export/primary
+  - /export/seondary

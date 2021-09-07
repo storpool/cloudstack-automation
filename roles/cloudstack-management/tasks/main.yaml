@@ -1,0 +1,20 @@
+---
+- name: Initializing CloudStack management service
+  import_tasks: initialize-management.yaml
+
+- name: Setting up primary/secondary NFS storage
+  import_tasks: setup-nfs-storage.yaml
+
+- name: Downloading system VM templates
+  become: true
+  become_method: sudo
+  command:
+    cmd: /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt
+    argv:
+      - -m
+      - /export/secondary
+      - -h
+      - kvm
+      - u
+      - "{{ systemvm_template_base_url }}/{{ cs_version[:4] }}/systemvmtemplate-{{ cs_version }}-kvm.qcow.bz2"
+      - F

@@ -1,0 +1,39 @@
+---
+- name: Installing cloudstack-management and mariadb packets
+  become: true
+  become_method: sudo
+  package:
+    name:
+      - cloudstack-management
+      - mariadb-server
+    state: latest
+
+- name: Creating MariaDB drop-in config for CloudStack
+  become: true
+  become_method: sudo
+  copy:
+    src: cloudstack.cnf
+    dest: /etc/my.cnf.d/
+    mode: 0644
+
+- name: Restarting MariaDB
+  become: true
+  become_method: sudo
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: Initializing CloudStack database
+  become: true
+  become_method: sudo
+  command:
+    argv:
+      - /usr/bin/cloudstack-setup-databases
+      - "cloud:{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}@localhost"
+      - --deploy-as=root
+    creates: /etc/cloudstack/management/db.properties
+
+- name: Setting up CloudStack management
+  become: true
+  become_method: sudo
+  command: /usr/bin/cloudstack-setup-management

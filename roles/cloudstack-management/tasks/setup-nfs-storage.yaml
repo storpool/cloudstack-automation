@@ -1,0 +1,17 @@
+---
+- name: Creating storage directories
+  become: true
+  become_method: sudo
+  file:
+    path: "{{ directory }}"
+    state: directory
+  loop: "{{ nfs_export_directories }}"
+  loop_control:
+    loop_var: directory
+
+- name: Exporting directories
+  import_role:
+    name: geerlingguy.nfs
+  vars:
+    nfs_exports:
+      - "/export  *(rw,async,no_root_squash,no_subtree_check)"
