@@ -8,8 +8,8 @@
 - name: Downloading system VM templates
   become: true
   command:
-    cmd: /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt
     argv:
+      - /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt
       - -m
       - /export/secondary
       - -h
