@@ -1,7 +1,6 @@
 ---
 - name: Creating storage directories
   become: true
-  become_method: sudo
   file:
     path: "{{ directory }}"
     state: directory

@@ -13,5 +13,6 @@
 
 - name: "Installing CloudStack management node"
   hosts: management
+  become_method: sudo
   roles:
     - cloudstack-management
