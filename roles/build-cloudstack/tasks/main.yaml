@@ -42,9 +42,8 @@
 - name: Installing nginx
   become: true
   become_method: sudo
-  yum:
-    name:
-      - nginx
+  package:
+    name: nginx
     state: present
 
 - name: Creating nginx server config directory
