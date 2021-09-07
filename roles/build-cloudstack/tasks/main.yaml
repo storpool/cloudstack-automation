@@ -30,13 +30,14 @@
     dest: /home/centos/cloudstack-src
     version: "{{ cs_version }}"
   when: cloudstack_git_checkout | bool
+  register: clone_result
 
 - name: Building RPMs
   shell: FLAGS=-DskipTests ./package.sh -d centos7
   args:
     chdir: /home/centos/cloudstack-src/packaging/
     executable: /bin/bash
-  when: cloudstack_build_packages | bool
+  when: clone_result.before == "null" or clone_result.after != clone_result.before
 
 - name: Installing nginx
   become: true
