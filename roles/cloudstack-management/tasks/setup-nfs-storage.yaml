@@ -9,6 +9,7 @@
     loop_var: directory
 
 - name: Exporting directories
+  become: true
   import_role:
     name: geerlingguy.nfs
   vars:
