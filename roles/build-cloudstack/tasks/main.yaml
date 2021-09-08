@@ -44,6 +44,7 @@
   copy:
     src: repo.conf
     dest: /etc/nginx/conf.d/cloudstack-repo.conf
+  register: nginx_repo_config
 
 - name: Copying RPMs to repository
   become: true
@@ -51,10 +52,12 @@
     src: /home/centos/cloudstack-src/dist/rpmbuild/RPMS/x86_64/
     remote_src: true
     dest: /var/www/repo/cloudstack/
+  register: copy_rpms
 
 - name: Creating an YUM repository
   become: true
   command: createrepo /var/www/repo/cloudstack/
+  when: copy_rpms.changed
 
 - name: Restarting nginx
   become: true
@@ -62,6 +65,7 @@
     name: nginx
     state: restarted
     enabled: true
+  when: nginx_repo_config.changed
 
 - name: Setting SELinux to permissive
   become: true
