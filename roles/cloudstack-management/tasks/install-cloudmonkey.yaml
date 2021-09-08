@@ -1,7 +1,0 @@
----
-- name: Downloading Cloudmonkey from GitHub
-  become: true
-  get_url:
-    url: "https://github.com/apache/cloudstack-cloudmonkey/releases/download/{{ cloudmonkey_version }}/cmk.linux.x86-64"
-    dest: /usr/bin/cmk
-    mode: 755

@@ -18,5 +18,9 @@
       - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow2.bz2"
       - -F
 
-- name: Installing CloudStack CLI
-  import_tasks: install-cloudmonkey.yaml
+- name: Downloading Cloudmonkey from GitHub
+  become: true
+  get_url:
+    url: "https://github.com/apache/cloudstack-cloudmonkey/releases/download/{{ cloudmonkey_version }}/cmk.linux.x86-64"
+    dest: /usr/bin/cmk
+    mode: 755
