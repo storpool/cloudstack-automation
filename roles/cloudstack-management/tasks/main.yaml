@@ -14,9 +14,9 @@
       - /export/secondary
       - -h
       - kvm
-      - u
+      - -u
       - "{{ systemvm_template_base_url }}/{{ cs_version[:4] }}/systemvmtemplate-{{ cs_version }}-kvm.qcow.bz2"
-      - F
+      - -F
 
 - name: Installing CloudStack CLI
   import_tasks: install-cloudmonkey.yaml
