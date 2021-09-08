@@ -13,12 +13,14 @@
     src: cloudstack.cnf
     dest: /etc/my.cnf.d/
     mode: 0644
+  register: cloudstack_config
 
 - name: Restarting MariaDB
   become: true
   systemd:
     name: mariadb
     state: restarted
+  when: cloudstack_config.changed
 
 - name: Initializing CloudStack database
   become: true
