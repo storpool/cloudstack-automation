@@ -1,15 +1,7 @@
 ---
-- name: Installing pip
+- name: Downloading Cloudmonkey from GitHub
   become: true
-  package:
-    name:
-      - python2-pip
-      - python-virtualenv
-      - python2-setuptools
-    state: present
-
-- name: Installing cloudmonkey package
-  become: true
-  pip:
-    name:
-      - cloudmonkey
+  get_url:
+    url: "https://github.com/apache/cloudstack-cloudmonkey/releases/download/{{ cloudmonkey_version }}/cmk.linux.x86-64"
+    dest: /usr/bin/cmk
+    mode: 755

@@ -6,3 +6,5 @@ systemvm_template_version_overrides:
 nfs_export_directories:
   - /export/primary
   - /export/secondary
+
+cloudmonkey_version: 6.1.0
