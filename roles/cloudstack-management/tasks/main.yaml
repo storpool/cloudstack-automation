@@ -15,7 +15,7 @@
       - -h
       - kvm
       - -u
-      - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow.bz2"
+      - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow2.bz2"
       - -F
 
 - name: Installing CloudStack CLI
