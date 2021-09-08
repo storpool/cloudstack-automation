@@ -1,8 +1,8 @@
 ---
 systemvm_template_base_url: https://download.cloudstack.org/systemvm
+systemvm_template_version_overrides:
+  4.13.1.0: 4.11.3
 
 nfs_export_directories:
   - /export/primary
   - /export/secondary
-
-
