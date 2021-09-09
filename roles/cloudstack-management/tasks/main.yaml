@@ -26,4 +26,5 @@
     mode: 755
 
 - name: Retrieving Cloudstack Developer API keys
+  import_tasks: retrieve-api-keys.yaml
 
