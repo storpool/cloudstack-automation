@@ -6,4 +6,4 @@
 - name: Retrieving admin user keys
   command: "cmk getUserKeys id={{ users.stdout | from_json | json_query(admin_user_id_query) }}"
   vars:
-    admin_user_id_query: "user[?username=='admin'].id"
+    admin_user_id_query: "user[?username=='admin'].id | [0]"
