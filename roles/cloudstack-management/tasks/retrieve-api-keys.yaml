@@ -1,9 +1,22 @@
 ---
 - name: Retrieving admin user
   command: cmk list users username=admin
-  register: users
+  register: list_users
 
 - name: Retrieving admin user keys
-  command: "cmk getUserKeys id={{ users.stdout | from_json | json_query(admin_user_id_query) }}"
-  vars:
-    admin_user_id_query: "user[?username=='admin'].id | [0]"
+  command: "cmk getUserKeys id={{ list_users.stdout | from_json | json_query(admin_user_id_json_query) }}"
+  register: get_user_keys
+
+- name: Setting fact if the user has API keys
+  set_fact:
+    user_has_keys: "{{ get_user_keys.stdout | from_json | json_query(user_has_keys_json_query) | bool }}"
+
+- name: Generating admin user keys
+  command: "cmk registerUserKeys id={{ list_users.stdout | from_json | json_query(admin_user_id_query) }}"
+  when: not user_has_keys
+  register: create_user_keys
+
+- name: Setting CloudStack API and Secret Keys
+  set_fact:
+    cs_api_key: "{{ get_user_keys.stdout | from_json | json_query('userkeys.apikey') if user_has_keys | bool else create_user_keys.stdout | from_json | json_query('userkeys.apikey') }}"
+    cs_secret_key: "{{ get_user_keys.stdout | from_json | json_query('userkeys.secretkey') if user_has_keys | bool else create_user_keys.stdout | from_json | json_query('userkeys.secretkey') }}"
