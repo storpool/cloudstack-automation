@@ -10,4 +10,4 @@ nfs_export_directories:
 cloudmonkey_version: 6.1.0
 
 admin_user_id_json_query: "user[?username=='admin'].id | [0]"
-user_has_keys_json_query: "(userkeys | keys(@) | contains(@, 'apikey') and (userkeys | keys(@) | contains(@, 'secretkey')"
+user_has_keys_json_query: "(userkeys | keys(@) | contains(@, 'apikey')) and (userkeys | keys(@) | contains(@, 'secretkey'))"
