@@ -6,3 +6,4 @@ collections:
   - community.crypto
   - nginxinc.nginx_core
   - ngine_io.cloudstack
+  - netcho.opennebula

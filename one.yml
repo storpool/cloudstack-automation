@@ -1,0 +1,14 @@
+plugin: "netcho.opennebula.opennebula"
+one_hostname_preference: name
+strict: true
+use_extra_vars: true
+compose:
+  ansible_host: nic | selectattr("ip", "defined") | map (attribute="ip") | first if nic | selectattr("ip", "defined") | length else name
+  running: state == "active" and lcm_state == "running"
+  cloudstack_cluster: name.split("_")[1]
+  storpool_services: name.split("_")[2:]
+leading_separator: false
+keyed_groups:
+  - prefix: cluster
+    key: cloudstack_cluster
+    parent_group: cloudstack
