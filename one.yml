@@ -11,6 +11,7 @@ compose:
 leading_separator: false
 groups:
   storpool_nodes: user_attributes.cloudstack_cluster is defined
+  storpool_server_nodes: '"server" in storpool_services'
 keyed_groups:
   - prefix: ""
     key: user_attributes.role_name

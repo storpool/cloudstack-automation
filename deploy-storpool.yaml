@@ -1,43 +1,32 @@
 ---
-- name: Generating StorPool configuration
-  hosts: "{{ cluster_group }}"
+- name: Installing StorPool
+  hosts: storpool_nodes
   become: true
   become_method: sudo
+  pre_tasks:
+    - name: Setting corresponding CloudStack cluster name
+      set_fact:
+        cloudstack_cluster: "{{ 'cluster_' + user_attributes.cloudstack_cluster }}"
   roles:
     - generate-storpool-config
-
-- name: Installing StorPool converged node
-  hosts: "{{ cluster_group }}_block_server_mgmt"
-  become: true
-  become_method: sudo
-  roles:
     - add-storpool-repo
     - install-sp-python
     - install-storpool-services
+
+- name: Initializng StorPool disks
+  hosts: storpool_server_nodes
+  become: true
+  become_method: sudo
     - initialize-drives
-    - configure-networking
-    - configure-cgroups
-  vars:
-    converged: true
 
-- name: Installing StorPool client node
-  hosts: "{{ cluster_group }}_block"
+- name: Initializng StorPool disks
+  hosts: storpool_nodes
   become: true
   become_method: sudo
   roles:
-    - add-storpool-repo
-    - install-sp-python
-    - install-storpool-services
     - configure-networking
     - configure-cgroups
-  vars:
-    converged: false
-
-- name: Starting StorPool services
-  hosts: "{{ cluster_group }}"
-  become: true
-  become_method: sudo
-  tasks:
+  post_tasks:
     - name: Enabling StorPool services
       command: /usr/sbin/storpool_ctl enable
     - name: Starting StorPool services
