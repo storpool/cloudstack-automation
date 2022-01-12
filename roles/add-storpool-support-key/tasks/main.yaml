@@ -1,3 +1,7 @@
+- name: Setting hostname
+  hostname:
+    name: "{{ 'lab-cs-' + lab_environment + '-' + 'mgmt' if 'management' == user_attributes.role_name else user_attributes.cloudstack_cluster + '-' + storpool_services | join ('-')}}"
+
 - name: Adding StorPool support key from file
   authorized_key:
     user: "{{ ansible_user }}"
