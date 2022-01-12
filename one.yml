@@ -10,8 +10,8 @@ compose:
   storpool_services: user_attributes.role_name.split("_")[2:]
 leading_separator: false
 groups:
-  storpool_nodes: user_attributes.cloudstack_cluster is defined
-  storpool_server_nodes: '"server" in storpool_services'
+  storpool_nodes: "'cloudstack_cluster' in user_attributes"
+  storpool_server_nodes: "'server' in user_attributes.role_name"
 keyed_groups:
   - prefix: ""
     key: user_attributes.role_name
