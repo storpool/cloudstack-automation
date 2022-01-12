@@ -3,4 +3,4 @@
   hosts: all
   become_method: sudo
   roles:
-    - add-storpool-support-key
+    - initial-setup
