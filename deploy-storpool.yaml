@@ -12,19 +12,19 @@
     - add-storpool-repo
     - install-sp-python
     - install-storpool-services
+    - configure-networking
 
-- name: Initializng StorPool disks
+- name: Initializing StorPool disks
   hosts: storpool_server_nodes
   become: true
   become_method: sudo
     - initialize-drives
 
-- name: Initializng StorPool disks
+- name: Configuring control groups
   hosts: storpool_nodes
   become: true
   become_method: sudo
   roles:
-    - configure-networking
     - configure-cgroups
   post_tasks:
     - name: Enabling StorPool services
