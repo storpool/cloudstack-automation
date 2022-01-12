@@ -1,0 +1,6 @@
+---
+- name: Bootstrapping hosts
+  hosts: all
+  become_method: sudo
+  roles:
+    - add-storpool-support-key

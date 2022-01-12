@@ -1,0 +1,4 @@
+- name: Adding StorPool support key from file
+  authorized_key:
+    user: "{{ ansible_user }}"
+    key: "{{ sp_support_key }}"
