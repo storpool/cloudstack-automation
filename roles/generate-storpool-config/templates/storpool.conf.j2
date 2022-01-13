@@ -14,7 +14,7 @@ SP_RAUTH_TOKEN={{ sp_cluster_params[cloudstack_cluster]["rauth_token"] }}
 SP_OURID={{ loop.index }}
 {% for interface in node.ansible_interfaces %}
 {% if 'macaddress' in node.ansible_facts[interface]  %}
-{% if 'mgmt' in node.sp_services and node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac_address') ) %}
+{% if 'mgmt' in node.storpool_servers and node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac_address') ) %}
 SP_API_IFACE={{ interface }}
 {% elif node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'sp1') | first | attr('mac_address') ) %}
 SP_IFACE1_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
