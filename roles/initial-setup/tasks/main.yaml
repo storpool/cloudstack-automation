@@ -1,4 +1,5 @@
 - name: Setting hostname
+  become: true
   hostname:
     name: "{{ 'lab-cs-' + lab_environment + '-' + ('mgmt' if 'management' == user_attributes.role_name else user_attributes.cloudstack_cluster + '-' + storpool_services | join ('-'))}}"
 
