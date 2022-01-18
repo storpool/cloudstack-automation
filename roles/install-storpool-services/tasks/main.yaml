@@ -1,18 +1,18 @@
 ---
 - name: Creating StorPool installation directory
   file:
-    path: "/home/centos/storpool/"
+    path: "{{ ansible_user_dir }}/storpool/"
     state: directory
-    owner: centos
-    group: centos
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0644
 
 - name: Downloading StorPool installation tools
   get_url:
     url: "https://vault.storpool.com/{{ tool_name }}"
-    dest: "/home/centos/storpool/"
-    owner: centos
-    group: centos
+    dest: "{{ ansible_user_dir }}/storpool/"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
   loop:
     - getpackage.py
@@ -21,9 +21,11 @@
     loop_var: tool_name
 
 - name: Downloading StorPool
-  command: "/home/centos/storpool/getpackage.py -g {{ sp_version }} -w /home/centos/storpool/ -t {{ sp_release_target }}"
+  command: "{{ ansible_user_dir }}/storpool/getpackage.py -g {{ sp_version }} -w {{ ansible_user_dir }}/storpool/ -t {{ sp_release_target }}"
+  become: true
   args:
-    creates: "/home/centos/storpool/storpool-{{ sp_version }}*.tar.gz"
+    creates: "{{ ansible_user_dir }}/storpool/storpool-{{ sp_version }}*.tar.gz"
 
 - name: Installing StorPool services
-  command: "/home/centos/storpool/install_modules_helper.py -g {{ sp_version }} -m {{ '@' + ( sp_services | join ('_') ) }} "
+  become: true
+  command: "{{ ansible_user_dir }}/storpool/install_modules_helper.py -g {{ sp_version }} -m {{ '@' + ( sp_services | join ('_') ) }} "
