@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-    - /vars/os_image_user_map.yaml
+    - vars/os_image_user_map.yaml
   tasks:
     - name: Generating unique name
       set_fact:
