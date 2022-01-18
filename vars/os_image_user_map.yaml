@@ -1,0 +1,5 @@
+---
+os_image_user_list:
+  - name: "CentOS 7"
+    one_image_id: 616
+    cloud_user: "centos"

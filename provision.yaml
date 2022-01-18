@@ -2,8 +2,8 @@
 - name: Provision infrastructure
   hosts: localhost
   gather_facts: false
-  vars:
-    cloudstack_clusters: []
+  vars_files:
+    - /vars/os_image_user_map.yaml
   tasks:
     - name: Generating unique name
       set_fact:
@@ -17,5 +17,7 @@
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
+          VM_IMAGE_ID: "{{ os_image_user_list | selectattr('name', 'eq', os_name) | first | attr('one_image_id') }}"
+          CLOUD_USER: "{{ os_image_user_list | selectattr('name', 'eq', os_name) | first | attr('cloud_user') }}"
         unique: true
         wait: true
