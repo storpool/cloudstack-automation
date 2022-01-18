@@ -8,6 +8,10 @@
     - name: Generating unique name
       set_fact:
         deployment_name: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
+    - name: Dumping image id and cloud user
+      debug:
+        msg: "Selected OS {{ os_image_user_list | selectattr('name', 'eq', os_name) | first }}"
+        verbosity: 2
     - name: Instantiating OpenNebula service
       one_service:
         template_id: "{{ one_template_id }}"
