@@ -21,7 +21,7 @@
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
-          VM_IMAGE_ID: "{{ os_image_user_list | selectattr('name', 'eq', os_name) | first | attr('one_image_id') }}"
-          CLOUD_USER: "{{ os_image_user_list | selectattr('name', 'eq', os_name) | first | attr('cloud_user') }}"
+          VM_IMAGE_ID: "{{ (os_image_user_list | selectattr('name', 'eq', os_name) | first )['one_image_id'] }}"
+          CLOUD_USER: "{{ (os_image_user_list | selectattr('name', 'eq', os_name) | first )['cloud_user'] }}"
         unique: true
         wait: true
