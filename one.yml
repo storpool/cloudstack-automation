@@ -6,6 +6,7 @@ strict: true
 use_extra_vars: true
 compose:
   ansible_host: nic | selectattr("ip", "defined") | map (attribute="ip") | first if nic | selectattr("ip", "defined") | length else name
+  ansible_user: user_attributes.cloud_user
   running: state == "active" and lcm_state == "running"
   storpool_services: user_attributes.role_name.split("_")[2:]
 leading_separator: false
