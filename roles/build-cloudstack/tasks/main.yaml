@@ -21,7 +21,7 @@
   register: clone_result
 
 - name: Building RPMs
-  shell: FLAGS=-DskipTests ./package.sh -d centos7
+  shell: "FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}"
   args:
     chdir: /home/centos/cloudstack-src/packaging/
     executable: /bin/bash
