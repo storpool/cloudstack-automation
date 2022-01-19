@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-    mode: 0644
+    mode: 0664
 
 - name: Downloading StorPool installation tools
   get_url:
