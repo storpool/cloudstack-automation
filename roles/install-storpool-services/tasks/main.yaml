@@ -8,6 +8,7 @@
     mode: 0664
 
 - name: Downloading StorPool installation tools
+  become: true
   get_url:
     url: "https://vault.storpool.com/{{ tool_name }}"
     dest: "{{ ansible_user_dir }}/storpool/"
