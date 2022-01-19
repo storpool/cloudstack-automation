@@ -1,5 +1,6 @@
 ---
 - name: Disabling hardware accelaration
+  become: true
   command:
     argv:
       - /usr/lib/storpool/vf-genconf
