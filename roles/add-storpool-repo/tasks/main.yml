@@ -11,4 +11,5 @@
     dest: /tmp/
 
 - name: Installing StorPool repo
+  become: true
   shell: /tmp/add-storpool-repo/add-storpool-repo.sh

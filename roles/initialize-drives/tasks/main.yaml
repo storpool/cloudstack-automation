@@ -13,6 +13,7 @@
     verbosity: 2
 
 - name: Formating disks
+  become: true
   parted:
     device: "/dev/{{ disk }}"
     number: 1
@@ -28,6 +29,7 @@
   register: storpool_showconf_sp_ourid
 
 - name: Initializing disks
+  become: true
   command:
     argv:
       - /usr/sbin/storpool_initdisk

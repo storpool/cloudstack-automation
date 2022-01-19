@@ -4,6 +4,7 @@
     msg: "API interface {{ nic | selectattr('name', 'eq', 'mgmt') | first }}, interface 1 {{ nic | selectattr('name', 'eq', 'sp1') | first }}, interface 2 {{ nic | selectattr('name', 'eq', 'mgmt') | first }}"
     verbosity: 2
 - name: Generating storpool.conf
+  become: true
   template:
     src: storpool.conf.j2
     dest: /etc/storpool.conf

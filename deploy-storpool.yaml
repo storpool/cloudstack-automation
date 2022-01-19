@@ -1,7 +1,6 @@
 ---
 - name: Installing StorPool
   hosts: storpool_nodes
-  become: true
   become_method: sudo
   pre_tasks:
     - name: Setting corresponding CloudStack cluster name
@@ -16,18 +15,18 @@
 
 - name: Initializing StorPool disks
   hosts: storpool_server_nodes
-  become: true
   become_method: sudo
     - initialize-drives
 
 - name: Configuring control groups
   hosts: storpool_nodes
-  become: true
   become_method: sudo
   roles:
     - configure-cgroups
   post_tasks:
     - name: Enabling StorPool services
+      become: true
       command: /usr/sbin/storpool_ctl enable
     - name: Starting StorPool services
+      become: true
       command: /usr/sbin/storpool_ctl start

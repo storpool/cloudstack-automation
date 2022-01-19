@@ -1,13 +1,16 @@
 ---
 - name: Creating /etc/cgconfig.d
+  become: true
   file:
     path: /etc/cgconfig.d
     state: directory
 
 - name: Running storpool-cg conf
+  become: true
   command: "/usr/sbin/storpool_cg conf CONVERGED={{'1' if sp_converged_node else '0'}} SYSTEM_LIMIT=2G USER_LIMIT=1G"
 
 - name: Restarting cgconfig
+  become: true
   systemd:
     name: cgconfig
     enabled: true
