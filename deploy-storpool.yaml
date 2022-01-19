@@ -16,6 +16,7 @@
 - name: Initializing StorPool disks
   hosts: storpool_server_nodes
   become_method: sudo
+  roles:
     - initialize-drives
 
 - name: Configuring control groups
