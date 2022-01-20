@@ -30,13 +30,14 @@
 
 - name: Initializing disks
   become: true
-  command:
-    argv:
-      - /usr/sbin/storpool_initdisk
-      - --no-notify
-      - "{{ '-I' if (diskId + 1) == 1 and (storpool_showconf_sp_ourid.stdout | int) == 1 else ''}}"
-      - "{{ (storpool_showconf_sp_ourid.stdout | int) * 100 + diskId + 1 }}"
-      - "/dev/{{ disk }}1"
+  command: >-
+    /usr/sbin/storpool_initdisk
+    --no-notify
+    {% if (diskId + 1) == 1 and (storpool_showconf_sp_ourid.stdout | int) == 1 %}
+    -I
+    {% endif %}
+    {{ (storpool_showconf_sp_ourid.stdout | int) * 100 + diskId + 1 }}
+    /dev/{{ disk }}1
   loop: "{{ available_drives }}"
   loop_control:
     loop_var: disk
