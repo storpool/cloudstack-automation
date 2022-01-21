@@ -38,15 +38,13 @@
     dest: "{{ ansible_user_dir }}/"
     src: "https://github.com/apache/cloudstack/archive/refs/tags/{{ cs_version }}.tar.gz"
     remote_src: true
-    creates: "{{ ansible_user_dir }}/cloudstack-{{ cs_version }}"
-  register: source_unarchive
 
 - name: Building RPMs
   shell: "FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}"
   args:
     chdir: "{{ ansible_user_dir }}/cloudstack-{{ cs_version }}/packaging/"
     executable: /bin/bash
-  when: source_unarchive.changed
+  when: clone_result.before == "null" or clone_result.after != clone_result.before
 
 - name: Installing nginx
   become: true
