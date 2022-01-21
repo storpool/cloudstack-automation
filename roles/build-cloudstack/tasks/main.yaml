@@ -1,4 +1,13 @@
 ---
+- name: Adding MySQL community yum repo
+  yum_repository:
+    name: mysql-community
+    description: MySQL Community connectors
+    baseurl: http://repo.mysql.com/yum/mysql-connectors-community/el/$releasever/$basearch/
+    gpgkey: http://repo.mysql.com/RPM-GPG-KEY-mysql
+    enabled: true
+    gpgcheck: true
+
 - name: Installing CloudStack build dependencies
   become: true
   yum:
