@@ -35,7 +35,7 @@
 
 - name: Cloning CloudStack GitHub repository
   git:
-    repo: https://github.com/apache/cloudstack.git
+    repo: https://github.com/slavkap/cloudstack.git
     dest: "{{ ansible_user_dir }}/cloudstack-src"
     version: "{{ cs_version }}"
   when: cloudstack_git_checkout | bool
