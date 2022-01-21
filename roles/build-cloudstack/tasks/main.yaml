@@ -36,7 +36,7 @@
 - name: Cloning CloudStack GitHub repository
   git:
     repo: https://github.com/apache/cloudstack.git
-    dest: /home/centos/cloudstack-src
+    dest: "{{ ansible_user_dir }}/cloudstack-src"
     version: "{{ cs_version }}"
   when: cloudstack_git_checkout | bool
   register: clone_result
@@ -44,7 +44,7 @@
 - name: Building RPMs
   shell: "FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}"
   args:
-    chdir: /home/centos/cloudstack-src/packaging/
+    chdir: "{{ ansible_user_dir }}/cloudstack-src/packaging/"
     executable: /bin/bash
   when: clone_result.before == "null" or clone_result.after != clone_result.before
 
@@ -70,7 +70,7 @@
 - name: Copying RPMs to repository
   become: true
   copy:
-    src: /home/centos/cloudstack-src/dist/rpmbuild/RPMS/x86_64/
+    src: "{{ ansible_user_dir }}/cloudstack-src/dist/rpmbuild/RPMS/x86_64/"
     remote_src: true
     dest: /var/www/repo/cloudstack/
   register: copy_rpms
