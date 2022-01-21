@@ -1,5 +1,6 @@
 ---
 - name: Adding MySQL community yum repo
+  become: true
   yum_repository:
     name: mysql-community
     description: MySQL Community connectors
@@ -9,6 +10,7 @@
     gpgcheck: true
 
 - name: Adding oVirt 44 repository
+  become: true
   dnf:
     name:
       - https://resources.ovirt.org/pub/yum-repo/ovirt-release44.rpm
