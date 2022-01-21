@@ -8,6 +8,15 @@
     enabled: true
     gpgcheck: true
 
+- name: Adding oVirt 44 repository
+  dnf:
+    name:
+      - https://resources.ovirt.org/pub/yum-repo/ovirt-release44.rpm
+    state: present
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "8"
+
 - name: Installing CloudStack build dependencies
   become: true
   yum:
