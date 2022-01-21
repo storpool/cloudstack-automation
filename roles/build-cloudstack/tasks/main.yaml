@@ -15,6 +15,7 @@
     name:
       - https://resources.ovirt.org/pub/yum-repo/ovirt-release44.rpm
     state: present
+    disable_gpg_check: true
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "8"
