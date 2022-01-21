@@ -33,18 +33,16 @@
       - mysql-connector-python
     state: present
 
-- name: Cloning CloudStack GitHub repository
-  git:
-    repo: https://github.com/apache/cloudstack.git
-    dest: "{{ ansible_user_dir }}/cloudstack-src"
-    version: "{{ cs_version }}"
-  when: cloudstack_git_checkout | bool
-  register: clone_result
+- name: Retrieving CloudStack source-code
+  unarchive:
+    dest: "{{ ansible_user_dir }}/"
+    src: "https://github.com/apache/cloudstack/archive/refs/tags/{{ cs_version }}.tar.gz"
+    remote_src: true
 
 - name: Building RPMs
   shell: "FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}"
   args:
-    chdir: "{{ ansible_user_dir }}/cloudstack-src/packaging/"
+    chdir: "{{ ansible_user_dir }}/cloudstack-{{ cs_version }}/packaging/"
     executable: /bin/bash
   when: clone_result.before == "null" or clone_result.after != clone_result.before
 
@@ -70,7 +68,7 @@
 - name: Copying RPMs to repository
   become: true
   copy:
-    src: "{{ ansible_user_dir }}/cloudstack-src/dist/rpmbuild/RPMS/x86_64/"
+    src: "{{ ansible_user_dir }}/cloudstack-{{ cs_version }}/dist/rpmbuild/RPMS/x86_64/"
     remote_src: true
     dest: /var/www/repo/cloudstack/
   register: copy_rpms
