@@ -29,4 +29,8 @@
 
 - name: Installing StorPool services
   become: true
-  command: "{{ ansible_user_dir }}/storpool/install_modules_helper.py -g {{ sp_version }} -m {{ '@' + ( storpool_services | join ('_') ) }} "
+  command: >-
+    {{ ansible_user_dir }}/storpool/install_modules_helper.py
+    -g {{ sp_version }}
+    --if-needed
+    -m {{ storpool_services | join (' ') }}
