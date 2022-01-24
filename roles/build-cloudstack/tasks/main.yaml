@@ -31,6 +31,9 @@
       - ws-commons-util
       - createrepo
       - mysql-connector-python
+      - wget
+      - java-11-openjdk-devel
+      - nodejs
     state: present
 
 - name: Cloning CloudStack GitHub repository
