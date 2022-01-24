@@ -8,7 +8,7 @@ SP_AUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["api_tok
 
 SP_RAUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["rauth_token"] }}
 
-{% for node_name in (groups[cloudstack_cluster + '_block_server_mgmt'] + groups[cloudstack_cluster + '_block']) %}
+{% for node_name in (groups[cloudstack_cluster]) %}
 {% set node = hostvars[node_name] %}
 [{{ node.ansible_hostname }}]
 SP_OURID={{ loop.index }}
