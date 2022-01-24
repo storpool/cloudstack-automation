@@ -8,6 +8,8 @@ SP_AUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["api_tok
 
 SP_RAUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["rauth_token"] }}
 
+SP_BRIDGE_HOST={{ sp_cluster_params[lab_environment][cloudstack_cluster]["bridge_host"] }}
+
 {% for node_name in (groups[cloudstack_cluster]) %}
 {% set node = hostvars[node_name] %}
 [{{ node.ansible_hostname }}]
@@ -20,6 +22,8 @@ SP_API_IFACE={{ interface }}
 SP_IFACE1_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
 {% elif node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'sp2') | first )['mac'] %}
 SP_IFACE2_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
+{% elif node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'bridge') | first )['mac'] %}
+SP_BRIDGE_IFACE={{ node.ansible_facts[interface].device }}
 {% endif %}
 {% endif %}
 {% endfor %}
