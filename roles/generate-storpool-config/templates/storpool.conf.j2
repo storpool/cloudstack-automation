@@ -1,12 +1,12 @@
-SP_CLUSTER_NAME={{ sp_cluster_params[cloudstack_cluster]["cluster_name"] }}
-SP_CLUSTER_ID={{ sp_cluster_params[cloudstack_cluster]["cluster_id"] }}
+SP_CLUSTER_NAME={{ sp_cluster_params[lab_environment][cloudstack_cluster]["cluster_name"] }}
+SP_CLUSTER_ID={{ sp_cluster_params[lab_environment][cloudstack_cluster]["cluster_id"] }}
 
 SP_EXPECTED_NODES={{ groups[cloudstack_cluster + '_block_server_mgmt'] | length }}
 
-SP_API_HTTP_HOST={{ sp_cluster_params[cloudstack_cluster]["api_host"] }}
-SP_AUTH_TOKEN={{ sp_cluster_params[cloudstack_cluster]["api_token"] }}
+SP_API_HTTP_HOST={{ sp_cluster_params[lab_environment][cloudstack_cluster]["api_host"] }}
+SP_AUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["api_token"] }}
 
-SP_RAUTH_TOKEN={{ sp_cluster_params[cloudstack_cluster]["rauth_token"] }}
+SP_RAUTH_TOKEN={{ sp_cluster_params[lab_environment][cloudstack_cluster]["rauth_token"] }}
 
 {% for node_name in (groups[cloudstack_cluster + '_block_server_mgmt'] + groups[cloudstack_cluster + '_block']) %}
 {% set node = hostvars[node_name] %}
