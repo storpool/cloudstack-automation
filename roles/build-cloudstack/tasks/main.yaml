@@ -41,6 +41,7 @@
     repo: https://github.com/slavkap/cloudstack.git
     dest: "{{ ansible_user_dir }}/cloudstack-src"
     version: "{{ cs_version }}"
+    depth: 1
   when: cloudstack_git_checkout | bool
   register: clone_result
 
