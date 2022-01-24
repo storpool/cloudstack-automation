@@ -4,7 +4,7 @@
     msg: >-
       API interface MAC: {{ nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac') }},
       interface 1 MAC: {{ nic | selectattr('name', 'eq', 'sp1') | first | attr('mac') }},
-      interface 2 MAC: {{ nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac')}}
+      interface 2 MAC: {{ nic | selectattr('name', 'eq', 'sp2') | first | attr('mac')}}
     verbosity: 2
 - name: Generating storpool.conf
   become: true
