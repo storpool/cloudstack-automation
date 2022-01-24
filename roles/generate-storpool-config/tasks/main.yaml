@@ -1,7 +1,10 @@
 ---
 - name: Print interfaces to be used by StorPool
   debug:
-    msg: "API interface {{ nic | selectattr('name', 'eq', 'mgmt') | first }}, interface 1 {{ nic | selectattr('name', 'eq', 'sp1') | first }}, interface 2 {{ nic | selectattr('name', 'eq', 'mgmt') | first }}"
+    msg: >-
+      API interface MAC: {{ nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac') }},
+      interface 1 MAC: {{ nic | selectattr('name', 'eq', 'sp1') | first | attr('mac') }},
+      interface 2 MAC: {{ nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac')}}
     verbosity: 2
 - name: Generating storpool.conf
   become: true
