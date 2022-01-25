@@ -14,8 +14,7 @@ groups:
   storpool_nodes: "user_attributes.role_name != 'management'"
   storpool_server_nodes: "'server' in user_attributes.role_name"
 keyed_groups:
-  - prefix: ""
-    key: user_attributes.role_name
+  - key: user_attributes.role_name
     parent_group: cloudstack
   - prefix: "cluster"
     key: user_attributes.cloudstack_cluster
