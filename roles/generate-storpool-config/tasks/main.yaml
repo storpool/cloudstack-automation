@@ -2,10 +2,10 @@
 - name: Print interfaces to be used by StorPool
   debug:
     msg: >-
-      API interface MAC: {{ nic | selectattr('name', 'eq', 'mgmt') | first | attr('mac') }},
-      Bridge interface MAC: {{ nic | selectattr('name', 'eq', 'bridge') | first | attr('mac') }},
-      interface 1 MAC: {{ nic | selectattr('name', 'eq', 'sp1') | first | attr('mac') }},
-      interface 2 MAC: {{ nic | selectattr('name', 'eq', 'sp2') | first | attr('mac')}}
+      API interface MAC: {{ (nic | selectattr('name', 'eq', 'mgmt') | first)['mac'] }},
+      Bridge interface MAC: {{ (nic | selectattr('name', 'eq', 'bridge') | first)['mac'] }},
+      interface 1 MAC: {{ (nic | selectattr('name', 'eq', 'sp1') | first)['mac'] }},
+      interface 2 MAC: {{ (nic | selectattr('name', 'eq', 'sp2') | first)['mac'] }}
     verbosity: 2
 - name: Generating storpool.conf
   become: true
