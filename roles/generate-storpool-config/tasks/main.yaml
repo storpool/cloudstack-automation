@@ -3,7 +3,9 @@
   debug:
     msg: >-
       API interface MAC: {{ (nic | selectattr('name', 'eq', 'mgmt') | first)['mac'] }},
+      {% if "bridge" in storpool_services %}
       Bridge interface MAC: {{ (nic | selectattr('name', 'eq', 'bridge') | first)['mac'] }},
+      {% endif %}
       interface 1 MAC: {{ (nic | selectattr('name', 'eq', 'sp1') | first)['mac'] }},
       interface 2 MAC: {{ (nic | selectattr('name', 'eq', 'sp2') | first)['mac'] }}
     verbosity: 2
