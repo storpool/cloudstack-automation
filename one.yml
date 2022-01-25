@@ -11,7 +11,7 @@ compose:
   storpool_services: user_attributes.role_name.split("_")[2:]
 leading_separator: false
 groups:
-  storpool_nodes: "'cloudstack_cluster' in user_attributes"
+  storpool_nodes: "user_attributes.role_name != 'management'"
   storpool_server_nodes: "'server' in user_attributes.role_name"
 keyed_groups:
   - prefix: ""
@@ -20,4 +20,3 @@ keyed_groups:
   - prefix: "cluster"
     key: user_attributes.cloudstack_cluster
     parent_group: cloudstack
-    default_value: "none"
