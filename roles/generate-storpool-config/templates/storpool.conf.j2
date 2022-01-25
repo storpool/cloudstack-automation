@@ -18,12 +18,13 @@ SP_OURID={{ loop.index }}
 {% if 'macaddress' in node.ansible_facts[interface]  %}
 {% if 'mgmt' in node.storpool_services and node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'mgmt') | first )['mac'] %}
 SP_API_IFACE={{ interface }}
-{% if 'bridge' in node.storpool_services and node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'bridge') | first )['mac'] %}
+{% elif 'bridge' in node.storpool_services and node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'bridge') | first )['mac'] %}
 SP_BRIDGE_IFACE={{ interface }}
 {% elif node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'sp1') | first )['mac'] %}
 SP_IFACE1_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
 {% elif node.ansible_facts[interface].macaddress == (node.nic | selectattr('name', 'eq', 'sp2') | first )['mac'] %}
 SP_IFACE2_CFG=1:{{ node.ansible_facts[interface].device }}:{{ node.ansible_facts[interface].device }}:0:{{ node.ansible_facts[interface].ipv4.address }}:b:x:v
+{% endif %}
 {% endif %}
 {% endfor %}
 {% if 'server' not in node.storpool_services %}
