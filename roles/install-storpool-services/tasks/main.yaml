@@ -32,5 +32,4 @@
   command: >-
     {{ ansible_user_dir }}/storpool/install_modules_helper.py
     -g {{ sp_version }}
-    --if-needed
-    {{ storpool_services | join (' ') }}
+    -m "{{ storpool_services | join (' ') }}"
