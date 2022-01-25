@@ -17,6 +17,3 @@ keyed_groups:
   - prefix: ""
     key: user_attributes.role_name
     parent_group: cloudstack
-  - prefix: "cluster"
-    key: user_attributes.cloudstack_cluster
-    parent_group: cloudstack
