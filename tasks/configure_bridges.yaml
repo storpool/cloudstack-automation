@@ -14,10 +14,13 @@
     url_username: Storpool v1
     url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
     return_content: true
+    body_format: json
   register: wait_for_cluster_request
-  until: (wait_for_cluster_request.content | from_json)["data"]["clusterStatus"] == "running"
-  delay: 5
-  retries: 36
+
+- name: Debug cluster state response
+  debug:
+    var: wait_for_cluster_request
+    verbosity: 2
 
 - name: Creating remote locations
   uri:
