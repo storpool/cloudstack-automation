@@ -25,9 +25,9 @@
   roles:
     - configure-cgroups
   post_tasks:
-    - name: Enabling StorPool services
-      become: true
-      command: /usr/sbin/storpool_ctl enable
-    - name: Starting StorPool services
-      become: true
-      command: /usr/sbin/storpool_ctl start
+    - import_tasks: tasks/configure_services.yaml
+
+- name: Configuring remote bridges
+  hosts: storpool_server_nodes
+  tasks:
+    - import_tasks: tasks/configure_bridges.yaml

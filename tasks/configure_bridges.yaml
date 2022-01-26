@@ -1,0 +1,74 @@
+---
+- name: Generating a list of peer StorPool clusters
+  set_fact:
+    peer_clusters: "{{ sp_cluster_params[lab_environment] | dict2items(key_name='name', value_name='details') | rejectattr('name', 'eq', cloudstack_cluster) }}"
+
+- name: Dumping the list of peer StorPool clusters
+  debug:
+    var: peer_clusters
+    verbosity: 2
+
+- name: "Waiting for cluster {{ cloudstack_cluster }} to become ready"
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/ServersListBlocked"
+    url_username: Storpool v1
+    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    return_content: true
+  register: wait_for_cluster_request
+  until: wait_for_cluster_request.json.data.clusterStatus == "running"
+  delay: 5
+  retries: 36
+
+- name: Creating remote locations
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/LocationAdd"
+    url_username: Storpool v1
+    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    method: POST
+    body_format: json
+    body: >-
+      {
+        "id": "{{ cluster.details["cluster_id"] | split('.') | first }}",
+        "name": "{{ cluster.name }}"
+      }
+  loop: peer_clusters
+  loop_control:
+    loop_var: cluster
+
+- name: Creating remote clusters
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/ClusterAdd"
+    url_username: Storpool v1
+    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    method: POST
+    body_format: json
+    body: >-
+      {
+        "id": "{{ cluster.details["cluster_id"] | split('.') | last }}",
+        "name": "{{ cluster.name }}"
+      }
+  loop: peer_clusters
+  loop_control:
+    loop_var: cluster
+
+- name: Getting bridge service public key
+  set_fact:
+    bridge_public_key: "{{ lookup('file', '/usr/lib/storpool/bridge/bridge.key.txt') }}"
+
+- name: Registering remote bridge services
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/RemoteBridgeAdd"
+    url_username: Storpool v1
+    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    method: POST
+    body_format: json
+    body: >-
+      {
+        "ip": "{{ cluster.details["bridge_host"] }}",
+        "location": "{{ cluster.name }}",
+        "noCrypto": true,
+        "publicKey": "{{ groups[cluster.name + '_block_server_mgmt_bridge'][0]['ansible_facts']['bridge_public_key'] }}"
+      }
+  loop: peer_clusters
+  loop_control:
+    loop_var: cluster
