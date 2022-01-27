@@ -61,6 +61,7 @@
     loop_var: cluster
 
 - name: Getting bridge service public key
+  become: true
   set_fact:
     bridge_public_key: "{{ lookup('file', '/usr/lib/storpool/bridge/bridge.key.txt') }}"
 
