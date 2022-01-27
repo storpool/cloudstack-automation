@@ -34,7 +34,7 @@
     body_format: json
     body: >-
       {
-        "id": "{{ cluster.details["location_id"] | split('.') | first }}",
+        "id": "{{ cluster.details["location_id"] }}",
         "name": "{{ cluster.name[:-1] }}"
       }
   loop: "{{ peer_clusters }}"
@@ -50,7 +50,7 @@
     body_format: json
     body: >-
       {
-        "id": "{{ cluster.details["cluster_id"] | split('.') | last }}",
+        "id": "{{ cluster.details["cluster_id"] }}",
         "location": "{{ cluster.name[:-1] }}",
         "name": "{{ cluster.name[-2:] }}"
       }
