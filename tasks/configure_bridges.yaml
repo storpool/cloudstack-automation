@@ -11,9 +11,8 @@
 - name: "Waiting for cluster {{ cloudstack_cluster }} to become ready"
   uri:
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/ServersListBlocked"
-    url_username: Storpool v1
-    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
-    force_basic_auth: true
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
     return_content: true
     body_format: json
   register: wait_for_cluster_request
