@@ -39,7 +39,7 @@
         "id": "{{ cluster.details["location_id"] }}",
         "name": "{{ cluster.name[:-1] }}"
       }
-  loop: "{{ peer_clusters | selectattr('details.location_id', 'unique') }}"
+  loop: "{{ peer_clusters | unique(attribute='details.location_id') | list }}"
   loop_control:
     loop_var: cluster
 
