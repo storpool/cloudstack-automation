@@ -13,6 +13,7 @@
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/ServersListBlocked"
     url_username: Storpool v1
     url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    force_basic_auth: true
     return_content: true
     body_format: json
   register: wait_for_cluster_request
@@ -28,8 +29,8 @@
 - name: Creating remote locations
   uri:
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/LocationAdd"
-    url_username: Storpool v1
-    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
     method: POST
     body_format: json
     body: >-
@@ -44,8 +45,8 @@
 - name: Creating remote clusters
   uri:
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/ClusterAdd"
-    url_username: Storpool v1
-    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
     method: POST
     body_format: json
     body: >-
@@ -64,8 +65,8 @@
 - name: Registering remote bridge services
   uri:
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/RemoteBridgeAdd"
-    url_username: Storpool v1
-    url_password: "{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
     method: POST
     body_format: json
     body: >-
