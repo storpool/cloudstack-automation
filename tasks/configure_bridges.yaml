@@ -16,6 +16,9 @@
     return_content: true
     body_format: json
   register: wait_for_cluster_request
+  until: wait_for_cluster_request.status == 200
+  retries: 36
+  delay: 5
 
 - name: Debug cluster state response
   debug:
