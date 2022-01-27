@@ -16,7 +16,7 @@
     return_content: true
     body_format: json
   register: wait_for_cluster_request
-  until: wait_for_cluster_request.status == 200
+  until: wait_for_cluster_request.json.data.clusterStatus == "running"
   retries: 36
   delay: 5
 
@@ -37,7 +37,7 @@
         "id": "{{ cluster.details["cluster_id"] | split('.') | first }}",
         "name": "{{ cluster.name }}"
       }
-  loop: peer_clusters
+  loop: "{{ peer_clusters }}"
   loop_control:
     loop_var: cluster
 
@@ -53,7 +53,7 @@
         "id": "{{ cluster.details["cluster_id"] | split('.') | last }}",
         "name": "{{ cluster.name }}"
       }
-  loop: peer_clusters
+  loop: "{{ peer_clusters }}"
   loop_control:
     loop_var: cluster
 
@@ -75,6 +75,6 @@
         "noCrypto": true,
         "publicKey": "{{ groups[cluster.name + '_block_server_mgmt_bridge'][0]['ansible_facts']['bridge_public_key'] }}"
       }
-  loop: peer_clusters
+  loop: "{{ peer_clusters }}"
   loop_control:
     loop_var: cluster
