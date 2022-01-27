@@ -1,5 +1,5 @@
 SP_CLUSTER_NAME={{ sp_cluster_params[lab_environment][cloudstack_cluster]["cluster_name"] }}
-SP_CLUSTER_ID={{ sp_cluster_params[lab_environment][cloudstack_cluster]["cluster_id"] }}
+SP_CLUSTER_ID={{ sp_cluster_params[lab_environment][cloudstack_cluster]["location_id"] }}.{{ sp_cluster_params[lab_environment][cloudstack_cluster]["cluster_id"] }}
 
 SP_EXPECTED_NODES={{ groups[cloudstack_cluster + '_block_server_mgmt_bridge'] | length }}
 

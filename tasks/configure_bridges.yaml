@@ -34,8 +34,8 @@
     body_format: json
     body: >-
       {
-        "id": "{{ cluster.details["cluster_id"] | split('.') | first }}",
-        "name": "{{ cluster.name }}"
+        "id": "{{ cluster.details["location_id"] | split('.') | first }}",
+        "name": "{{ cluster.name[:-1] }}"
       }
   loop: "{{ peer_clusters }}"
   loop_control:
@@ -51,7 +51,8 @@
     body: >-
       {
         "id": "{{ cluster.details["cluster_id"] | split('.') | last }}",
-        "name": "{{ cluster.name }}"
+        "location": "{{ cluster.name[:-1] }}",
+        "name": "{{ cluster.name[-2:] }}"
       }
   loop: "{{ peer_clusters }}"
   loop_control:
@@ -71,7 +72,7 @@
     body: >-
       {
         "ip": "{{ cluster.details["bridge_host"] }}",
-        "location": "{{ cluster.name }}",
+        "remote": "{{ cluster.name[-2:] }}",
         "noCrypto": true,
         "publicKey": "{{ groups[cluster.name + '_block_server_mgmt_bridge'][0]['ansible_facts']['bridge_public_key'] }}"
       }
