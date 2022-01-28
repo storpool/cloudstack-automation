@@ -32,9 +32,20 @@
       - createrepo
       - mysql-connector-python
       - wget
+      - java-11-openjdk
       - java-11-openjdk-devel
       - nodejs
     state: present
+
+- name: Configuring java alternative
+  alternatives:
+    name: java
+    path: /usr/lib/jvm/java-11-openjdk/bin/java
+
+- name: Configuring javac alternative
+  alternatives:
+    name: javac
+    path: /usr/lib/jvm/java-11-openjdk/bin/javac
 
 - name: Cloning CloudStack GitHub repository
   git:
