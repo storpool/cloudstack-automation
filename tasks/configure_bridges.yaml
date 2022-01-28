@@ -74,7 +74,7 @@
 
 - name: Printing remote cluster bridge IP address
   debug:
-    msg: "Remote IP: {{ (hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first)['vars']['nic'] }}"
+    msg: "Remote IP: {{ (( hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first )['vars']['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}"
     verbosity: 2
   loop: "{{ peer_clusters }}"
   loop_control:
