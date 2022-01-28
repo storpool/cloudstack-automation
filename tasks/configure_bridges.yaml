@@ -64,10 +64,13 @@
   become: true
   command: cat /usr/lib/storpool/bridge/bridge.key.txt
   register: get_bridge_public_key
+  when: bridge_public_key is not defined
 
 - name: Setting bridge_public_key fact
   set_fact:
     bridge_public_key: "{{ get_bridge_public_key.stdout }}"
+    cacheable: true
+  when: get_bridge_public_key is defined
 
 - name: Registering remote bridge services
   uri:
