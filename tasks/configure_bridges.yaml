@@ -81,7 +81,7 @@
     body_format: json
     body: >-
       {
-        "ip": "{{ cluster.details["bridge_host"] }}",
+        "ip": "{{ (hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | map(attribute='vars.nic') | selectattr('name', 'eq', 'bridge'))["ip"] }}",
         "remote": "{{ cluster.name[-2:] }}",
         "noCrypto": true,
         "publicKey": "{{ (hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first)["vars"]["ansible_facts"]["bridge_public_key"] }}"
