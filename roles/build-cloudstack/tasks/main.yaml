@@ -61,7 +61,9 @@
   register: clone_result
 
 - name: Building RPMs
-  shell: "FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}"
+  shell: |
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+    FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }}
   args:
     chdir: "{{ ansible_user_dir }}/cloudstack-src/packaging/"
     executable: /bin/bash
