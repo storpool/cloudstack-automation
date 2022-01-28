@@ -62,8 +62,12 @@
 
 - name: Getting bridge service public key
   become: true
+  command: cat /usr/lib/storpool/bridge/bridge.key.txt
+  register: get_bridge_public_key
+
+- name: Setting bridge_public_key fact
   set_fact:
-    bridge_public_key: "{{ lookup('file', '/usr/lib/storpool/bridge/bridge.key.txt') }}"
+    bridge_public_key: "{{ get_bridge_public_key.stdout }}"
 
 - name: Registering remote bridge services
   uri:
