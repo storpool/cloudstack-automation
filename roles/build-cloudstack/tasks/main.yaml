@@ -41,11 +41,13 @@
   alternatives:
     name: java
     path: /usr/lib/jvm/java-11-openjdk/bin/java
+    link: /usr/bin/java
 
 - name: Configuring javac alternative
   alternatives:
     name: javac
     path: /usr/lib/jvm/java-11-openjdk/bin/javac
+    link: /usr/bin/javac
 
 - name: Cloning CloudStack GitHub repository
   git:
