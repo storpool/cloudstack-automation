@@ -38,12 +38,14 @@
     state: present
 
 - name: Configuring java alternative
+  become: true
   alternatives:
     name: java
     path: /usr/lib/jvm/java-11-openjdk/bin/java
     link: /usr/bin/java
 
 - name: Configuring javac alternative
+  become: true
   alternatives:
     name: javac
     path: /usr/lib/jvm/java-11-openjdk/bin/javac
