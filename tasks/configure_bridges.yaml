@@ -72,6 +72,14 @@
     cacheable: true
   when: get_bridge_public_key is defined
 
+- name: Printing remote cluster bridge IP address
+  debug:
+    msg: "Remote IP: {{ hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first }}"
+    verbosity: 2
+  loop: "{{ peer_clusters }}"
+  loop_control:
+    loop_var: cluster
+
 - name: Registering remote bridge services
   uri:
     url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/RemoteBridgeAdd"
