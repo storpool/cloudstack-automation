@@ -84,7 +84,7 @@
         "ip": "{{ cluster.details["bridge_host"] }}",
         "remote": "{{ cluster.name[-2:] }}",
         "noCrypto": true,
-        "publicKey": "{{ hostvars[groups[cluster.name + '_block_server_mgmt_bridge'][0]]['ansible_facts']['bridge_public_key'] }}"
+        "publicKey": "{{ (hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'in', cluster.name) | selectattr('hostname', 'in', 'bridge') | first)["vars"]["ansible_facts"]["bridge_public_key"] }}"
       }
   loop: "{{ peer_clusters }}"
   loop_control:
