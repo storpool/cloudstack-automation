@@ -18,9 +18,8 @@
 
 - name: Symlinking python3 to python
   become: true
-  file:
-    path: /usr/bin/python
-    state: link
-    src: /usr/bin/python3
-    mode: 0755
+  alternatives:
+    name: python
+    path: /usr/bin/python3
+    link: /usr/bin/python
   when: ansible_os_family == "RedHat"
