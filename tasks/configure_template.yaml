@@ -1,0 +1,30 @@
+---
+- name: Retrieving SP_OURID value using storpool_showconf
+  command: /usr/sbin/storpool_showconf -n SP_OURID
+  register: storpool_showconf_sp_ourid
+
+- name: Creating the virtual placement group
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/PlacementGroupUpdate/virtual"
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    method: POST
+    body_format: json
+    body: >-
+      {
+         "addDisks": [{% for drive in available_drives %}{{ 101 + loop.index }}{% endfor %}]
+      }
+
+- name: Creating the virtual template
+  uri:
+    url: "http://{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_host'] }}:81/ctrl/1.0/VolumeTemplateCreate"
+    headers:
+      Authorization: "Storpool v1:{{ sp_cluster_params[lab_environment][cloudstack_cluster]['api_token'] }}"
+    method: POST
+    body_format: json
+    body: >-
+      {
+         "name": "virtual",
+         "replication": 1,
+         "placeAll": "virtual"
+      }
