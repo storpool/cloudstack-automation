@@ -14,7 +14,7 @@
     name: firewalld
     state: stopped
     enabled: false
-  when: ansible_os_familly == "RedHat"
+  when: ansible_os_family == "RedHat"
 
 - name: Symlinking python3 to python
   become: true
