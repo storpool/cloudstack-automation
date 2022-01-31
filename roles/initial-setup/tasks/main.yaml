@@ -7,3 +7,10 @@
   authorized_key:
     user: "{{ ansible_user }}"
     key: "{{ sp_support_key }}"
+
+- name: Disabling firewalld on RedHat family
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: false
+  when: ansible_os_familly == "RedHat"
