@@ -16,6 +16,12 @@
     enabled: false
   when: ansible_os_family == "RedHat"
 
+- name: Installing python3 on RedHat family
+  package:
+    name: python3
+    state: present
+  when: ansible_os_family == "RedHat"
+
 - name: Symlinking python3 to python
   become: true
   alternatives:
