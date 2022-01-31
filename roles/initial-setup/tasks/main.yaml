@@ -9,8 +9,18 @@
     key: "{{ sp_support_key }}"
 
 - name: Disabling firewalld on RedHat family
+  become: true
   systemd:
     name: firewalld
     state: stopped
     enabled: false
   when: ansible_os_familly == "RedHat"
+
+- name: Symlinking python3 to python
+  become: true
+  file:
+    path: /usr/bin/python
+    state: link
+    src: /usr/bin/python3
+    mode: 0755
+  when: ansible_os_family == "RedHat"
