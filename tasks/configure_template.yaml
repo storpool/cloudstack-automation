@@ -4,6 +4,11 @@
   command: /usr/sbin/storpool_initdisk --json --list
   register: storpool_inidisk_list
 
+- name: Printing json
+  debug:
+    msg: "{{ (storpool_inidisk_list.stdout | from_json)['disks'] | dict2items(key_name='device', value_name='details') }}"
+    verbosity: 2
+
 - name: Creating a list of initialized disks
   set_fact:
     initialized_disks: "{{ (storpool_inidisk_list.stdout | from_json)['disks'] | dict2items(key_name='device', value_name='details') | selectattr('details.isStorPool') | map(attribute='id') | list }}"
