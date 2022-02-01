@@ -31,3 +31,8 @@
   hosts: storpool_server_nodes
   tasks:
     - import_tasks: tasks/configure_bridges.yaml
+
+- name: Configuring storage template
+  hosts: storpool_server_nodes
+  tasks:
+    - import_tasks: tasks/configure_template.yaml
