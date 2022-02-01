@@ -1,7 +1,17 @@
 ---
-- name: Retrieving SP_OURID value using storpool_showconf
-  command: /usr/sbin/storpool_showconf -n SP_OURID
-  register: storpool_showconf_sp_ourid
+- name: Retrieving initialized disks
+  become: true
+  command: /usr/sbin/storpool_initdisk --json --list
+  register: storpool_inidisk_list
+
+- name: Creating a list of initialized disks
+  set_fact:
+    initialized_disks: "{{ (storpool_inidisk_list.stdout | from_json)['disks'] | dict2items(key_name='device', value_name='details) | selectattr('details.isStorPool', 'true') | map(attribute='id') | list }}"
+
+- name: Printing list of initialized disks IDs
+  debug:
+    var: initialized_disks
+    verbosity: 2
 
 - name: Creating the virtual placement group
   uri:
@@ -12,7 +22,7 @@
     body_format: json
     body: >-
       {
-         "addDisks": [{% for drive in available_drives %}{{ 101 + loop.index }}{% endfor %}]
+         "addDisks": [{{ initialized_disks | join(',) }}]
       }
 
 - name: Creating the virtual template
