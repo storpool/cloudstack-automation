@@ -6,7 +6,7 @@
 
 - name: Creating a list of initialized disks
   set_fact:
-    initialized_disks: "{{ (storpool_inidisk_list.stdout | from_json)['disks'] | dict2items(key_name='device', value_name='details') | selectattr('details.isStorPool', 'true') | map(attribute='id') | list }}"
+    initialized_disks: "{{ (storpool_inidisk_list.stdout | from_json)['disks'] | dict2items(key_name='device', value_name='details') | selectattr('details.isStorPool') | map(attribute='id') | list }}"
 
 - name: Printing list of initialized disks IDs
   debug:
