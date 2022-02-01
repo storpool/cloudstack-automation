@@ -17,6 +17,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Installing python3 on RedHat family
+  become: true
   package:
     name: python3
     state: present
