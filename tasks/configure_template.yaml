@@ -22,7 +22,7 @@
     body_format: json
     body: >-
       {
-         "addDisks": [{{ initialized_disks | join(',) }}]
+         "addDisks": [{{ initialized_disks | join(',') }}]
       }
 
 - name: Creating the virtual template
