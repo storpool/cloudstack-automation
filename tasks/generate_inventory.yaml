@@ -1,9 +1,42 @@
 ---
+- name: Generating cloudstack_management group
+  add_host:
+    hostname: "{{ host.name }}"
+    groups:
+      - cloudstack_management
+  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'eq', 'management') | list }}"
+  loop_control:
+    loop_var: host
+
+- name: Printing cloudstack_management group
+  debug:
+    var: "{{ groups['cloudstack_management'] }}"
+    verbosity: 2
+
 - name: Generating storpool_nodes group
   add_host:
-    hostname: "{{ hostname }}"
+    hostname: "{{ host.name }}"
     groups:
       - storpool_nodes
-  loop: "{{  }}"
+  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'ne', 'management') | list }}"
   loop_control:
-    loop_var: hostname
+    loop_var: host
+
+- name: Printing storpool_nodes group
+  debug:
+    var: "{{ groups['storpool_nodes'] }}"
+    verbosity: 2
+
+- name: Generating storpool_server_nodes group
+  add_host:
+    hostname: "{{ host.name }}"
+    groups:
+      - storpool_server_nodes
+  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'ne', 'management') | selectattr('vars.user_attributes.storpool_services', 'contains', 'server') | list }}"
+  loop_control:
+    loop_var: host
+
+- name: Printing storpool_server_nodes group
+  debug:
+    var: "{{ groups['storpool_server_nodes'] }}"
+    verbosity: 2
