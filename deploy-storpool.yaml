@@ -1,4 +1,9 @@
 ---
+- name: Generating in-memory inventory
+  hosts: localhost
+  tasks:
+    - import_tasks: tasks/generate_inventory.yaml
+
 - name: Installing StorPool
   hosts: storpool_nodes
   become_method: sudo

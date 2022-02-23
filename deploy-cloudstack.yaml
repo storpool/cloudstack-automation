@@ -1,18 +1,23 @@
 ---
+- name: Generating in-memory inventory
+  hosts: localhost
+  tasks:
+    - import_tasks: tasks/generate_inventory.yaml
+
 - name: "Building CloudStack {{ cs_version }}"
-  hosts: management
+  hosts: cloudstack_management
   become_method: sudo
   roles:
     - build-cloudstack
 
 - name: "Installing CloudStack repository"
-  hosts: all
+  hosts: "{{ lab_environment }}"
   become_method: sudo
   roles:
     - add-cloudstack-repository
 
 - name: "Installing CloudStack management node"
-  hosts: management
+  hosts: cloudstack_management
   become_method: sudo
   roles:
     - cloudstack-management

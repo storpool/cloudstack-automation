@@ -10,12 +10,9 @@ compose:
   running: state == "active" and lcm_state == "running"
   storpool_services: user_attributes.role_name.split("_")[2:]
 leading_separator: false
-groups:
-  storpool_nodes: "user_attributes.role_name != 'management'"
-  storpool_server_nodes: "'server' in user_attributes.role_name"
 keyed_groups:
-  - key: user_attributes.role_name
-    parent_group: cloudstack
   - prefix: "cluster"
     key: user_attributes.cloudstack_cluster
+    parent_group: cloudstack
+  - key: user_attributes.environment_id
     parent_group: cloudstack

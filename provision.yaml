@@ -5,7 +5,12 @@
   vars_files:
     - vars/os_image_user_map.yaml
   tasks:
-    - name: Generating unique name
+    - name: Checking if environment id has been generated
+      assert:
+        that:
+          - lab_environment_id is defined
+        fail_msg: "Environment ID is missing"
+    - name: Generating name
       set_fact:
         deployment_name: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
     - name: Dumping image id and cloud user
@@ -18,6 +23,7 @@
         service_name: "{{ deployment_name }}"
         custom_attrs:
           ENVIRONMENT: "{{ lab_environment }}"
+          ENVIRONMENT_ID: "{{ lab_environment_id }}"
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"

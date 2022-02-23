@@ -1,6 +1,6 @@
 ---
 - name: Bootstrapping hosts
-  hosts: all
+  hosts: "{{ lab_environment_id }}"
   become_method: sudo
   roles:
     - initial-setup

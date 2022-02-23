@@ -1,0 +1,9 @@
+---
+- name: Generating storpool_nodes group
+  add_host:
+    hostname: "{{ hostname }}"
+    groups:
+      - storpool_nodes
+  loop: "{{  }}"
+  loop_control:
+    loop_var: hostname
