@@ -13,7 +13,7 @@
     groups:
       - cloudstack_management
       - environment_hosts
-  loop: "environment_hosts | selectattr('vars.user_attributes.role_name', 'eq', 'management') | list }}"
+  loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'eq', 'management') | list }}"
   loop_control:
     loop_var: host
 
