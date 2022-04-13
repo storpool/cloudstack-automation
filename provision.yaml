@@ -8,7 +8,7 @@
     - name: Generating name and environment_id
       set_fact:
         deployment_name: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
-        lab_environment_id: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }} | to_uuid"
+        stack_uuid: "{{ 'lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version | to_uuid }}"
     - name: Dumping image id and cloud user
       debug:
         msg: "Selected OS {{ os_image_user_list | selectattr('name', 'eq', os_name) | first }}"
@@ -19,7 +19,7 @@
         service_name: "{{ deployment_name }}"
         custom_attrs:
           ENVIRONMENT: "{{ lab_environment }}"
-          ENVIRONMENT_ID: "{{ lab_environment_id }}"
+          STACK_UUID: "{{ stack_uuid }}"
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
           STORPOOL_PLUGIN_VERSION: "{{ plugin_version }}"
