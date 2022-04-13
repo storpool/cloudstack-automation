@@ -1,10 +1,19 @@
 ---
+- name: Generating lab_environment_id
+  set_fact:
+    lab_environment_id: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }} | to_uuid"
+
+- name: Generating a list of hosts that are part of the environment
+  set_fact:
+    environment_hosts: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | list }}"
+
 - name: Generating cloudstack_management group
   add_host:
     hostname: "{{ host.name }}"
     groups:
       - cloudstack_management
-  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'eq', 'management') | list }}"
+      - environment_hosts
+  loop: "environment_hosts | selectattr('vars.user_attributes.role_name', 'eq', 'management') | list }}"
   loop_control:
     loop_var: host
 
@@ -18,7 +27,8 @@
     hostname: "{{ host.name }}"
     groups:
       - storpool_nodes
-  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'ne', 'management') | list }}"
+      - environment_hosts
+  loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'ne', 'management') | list }}"
   loop_control:
     loop_var: host
 
@@ -32,7 +42,7 @@
     hostname: "{{ host.name }}"
     groups:
       - storpool_server_nodes
-  loop: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.lab_environment_id', 'eq', lab_environment_id) | selectattr('vars.user_attributes.role_name', 'ne', 'management') | selectattr('vars.user_attributes.storpool_services', 'contains', 'server') | list }}"
+  loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'ne', 'management') | selectattr('vars.user_attributes.storpool_services', 'contains', 'server') | list }}"
   loop_control:
     loop_var: host
 

@@ -1,6 +1,11 @@
 ---
+- name: Generating in-memory inventory
+  hosts: localhost
+  tasks:
+    - import_tasks: tasks/generate_inventory.yaml
+
 - name: Bootstrapping hosts
-  hosts: "{{ lab_environment_id }}"
+  hosts: environment_hosts
   become_method: sudo
   roles:
     - initial-setup

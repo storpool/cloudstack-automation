@@ -11,7 +11,7 @@
     - build-cloudstack
 
 - name: "Installing CloudStack repository"
-  hosts: "{{ lab_environment }}"
+  hosts: environment_hosts
   become_method: sudo
   roles:
     - add-cloudstack-repository
