@@ -42,7 +42,7 @@
     hostname: "{{ host.name }}"
     groups:
       - storpool_server_nodes
-  loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'ne', 'management') | selectattr('vars.user_attributes.storpool_services', 'contains', 'server') | list }}"
+  loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'ne', 'management') | selectattr('vars.storpool_services', 'contains', 'server') | list }}"
   loop_control:
     loop_var: host
 
