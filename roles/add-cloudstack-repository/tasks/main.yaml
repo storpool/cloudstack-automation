@@ -1,9 +1,13 @@
 ---
+- name: Getting cloudstack management hostname
+  set_fact:
+    cloudstack_management_hostname: "{{ groups['cloudstack_management'] | first }}"
+
 - name: Adding entry in /etc/hosts to management node
   become: true
   lineinfile:
     path: /etc/hosts
-    line: "{{ cs_management_ip }} cloudstack.repo"
+    line: "{{ (hostvars[cloudstack_management_hostname].nic | first).ip }} cloudstack.repo"
 
 - name: Adding yum repository
   become: true
