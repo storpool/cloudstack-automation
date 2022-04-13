@@ -1,7 +1,7 @@
 ---
 - name: Generating stack_uuid
   set_fact:
-    stack_uuid: "{{ 'lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version | to_uuid }}"
+    stack_uuid: "{{ ('lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version) | to_uuid }}"
 
 - name: Generating a list of hosts that are part of the environment
   set_fact:

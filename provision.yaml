@@ -8,7 +8,7 @@
     - name: Generating name and environment_id
       set_fact:
         deployment_name: "lab-cs-{{ lab_environment }}-{{ sp_version }}-{{ cs_version }}-{{ plugin_version }}"
-        stack_uuid: "{{ 'lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version | to_uuid }}"
+        stack_uuid: "{{ ('lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version) | to_uuid }}"
     - name: Dumping image id and cloud user
       debug:
         msg: "Selected OS {{ os_image_user_list | selectattr('name', 'eq', os_name) | first }}"
