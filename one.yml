@@ -14,5 +14,3 @@ keyed_groups:
   - prefix: "cluster"
     key: user_attributes.cloudstack_cluster
     parent_group: cloudstack
-  - key: user_attributes.stack_uuid
-    parent_group: cloudstack
