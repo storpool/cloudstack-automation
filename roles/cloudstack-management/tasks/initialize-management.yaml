@@ -1,10 +1,10 @@
 ---
-- name: Installing cloudstack-management and mariadb packets
+- name: Installing cloudstack-management
   become: true
   package:
     name:
       - cloudstack-management
-      - mariadb-server
+      - mysql-server
     state: latest
 
 - name: Creating MariaDB drop-in config for CloudStack
@@ -15,12 +15,12 @@
     mode: 0644
   register: cloudstack_config
 
-- name: Restarting MariaDB
+- name: Restarting MySQL server
   become: true
   systemd:
-    name: mariadb
+    name: mysqld
     state: restarted
-  when: cloudstack_config.changed
+    enabled: true
 
 - name: Initializing CloudStack database
   become: true
