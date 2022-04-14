@@ -27,3 +27,4 @@
           CLOUD_USER: "{{ (os_image_user_list | selectattr('name', 'eq', os_name) | first )['cloud_user'] }}"
         unique: true
         wait: true
+        wait_timeout: 600
