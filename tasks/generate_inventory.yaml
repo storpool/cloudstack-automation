@@ -55,7 +55,7 @@
   add_host:
     hostname: "{{ host.name }}"
     groups:
-      - "cluster_{{ host.user_attributes.cloudstack_cluster }}"
+      - "cluster_{{ host.vars.user_attributes.cloudstack_cluster }}"
   loop: "{{ environment_hosts | selectattr('vars.user_attributes.role_name', 'ne', 'management') | list }}"
   loop_control:
     loop_var: host
