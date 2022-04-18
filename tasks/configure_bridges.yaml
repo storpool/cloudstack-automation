@@ -78,7 +78,7 @@
 
 - name: Printing remote cluster bridge IP address
   debug:
-    msg: "Remote host {{ remote_bridge_hosts }} with remote bridge IP {{ ( hostvars[remote_bridge_host]['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}"
+    msg: "Remote host {{ remote_bridge_host }} with remote bridge IP {{ ( hostvars[remote_bridge_host]['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}"
     verbosity: 2
   loop: "{{ remote_bridge_hosts }}"
   loop_control:
