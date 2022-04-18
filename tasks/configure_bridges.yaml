@@ -72,13 +72,17 @@
     cacheable: true
   when: get_bridge_public_key is defined
 
+- name: Generating a list of remote bridge hostnames
+  set_fact:
+    remote_bridge_hosts: "{{ groups['storpool_server_nodes'] | select('ne', inventory_hostname) | list }}"
+
 - name: Printing remote cluster bridge IP address
   debug:
-    msg: "Remote IP: {{ (( hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first )['vars']['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}"
+    msg: "Remote host {{ remote_bridge_hosts }} with remote bridge IP {{ ( hostvars[remote_bridge_host]['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}"
     verbosity: 2
-  loop: "{{ peer_clusters }}"
+  loop: "{{ remote_bridge_hosts }}"
   loop_control:
-    loop_var: cluster
+    loop_var: remote_bridge_host
 
 - name: Registering remote bridge services
   uri:
@@ -89,11 +93,11 @@
     body_format: json
     body: >-
       {
-        "ip": "{{ (( hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first )['vars']['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}",
+        "ip": "{{ ( hostvars[remote_bridge_host]['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}",
         "remote": "{{ cluster.name[-2:] }}",
         "noCrypto": true,
-        "publicKey": "{{ (hostvars | dict2items(key_name='hostname', value_name='vars') | selectattr('hostname', 'contains', cluster.name) | selectattr('hostname', 'contains', 'bridge') | first)["vars"]["ansible_facts"]["bridge_public_key"] }}"
+        "publicKey": "{{ hostvars[remote_bridge_hosts]["ansible_facts"]["bridge_public_key"] }}"
       }
-  loop: "{{ peer_clusters }}"
+  loop: "{{ remote_bridge_hosts }}"
   loop_control:
-    loop_var: cluster
+    loop_var: remote_bridge_host
