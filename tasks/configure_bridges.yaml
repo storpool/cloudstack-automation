@@ -96,7 +96,7 @@
         "ip": "{{ ( hostvars[remote_bridge_host]['nic'] | selectattr('name', 'eq', 'bridge') | first )['ip'] }}",
         "remote": "{{ hostvars[remote_bridge_host]['user_attributes']['cloudstack_cluster'] }}",
         "noCrypto": true,
-        "publicKey": "{{ hostvars[remote_bridge_hosts]['ansible_facts']['bridge_public_key'] }}"
+        "publicKey": "{{ hostvars[remote_bridge_host]['ansible_facts']['bridge_public_key'] }}"
       }
   loop: "{{ remote_bridge_hosts }}"
   loop_control:
