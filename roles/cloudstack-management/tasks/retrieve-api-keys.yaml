@@ -15,7 +15,7 @@
     user_has_keys: "{{ get_user_keys.stdout | from_json | json_query('userkeys') | length == 2 }}"
 
 - name: Generating admin user keys
-  command: "cmk registerUserKeys id={{ list_users.stdout | from_json | json_query(admin_user_id_query) }}"
+  command: "cmk registerUserKeys id={{ list_users.stdout | from_json | json_query(admin_user_id_json_query) }}"
   when: not user_has_keys
   register: create_user_keys
 
