@@ -25,6 +25,8 @@
     dest: /usr/bin/cmk
     mode: 0755
 
-- name: Retrieving Cloudstack Developer API keys
+- name: Retrieving CloudStack Developer API keys
   import_tasks: retrieve-api-keys.yaml
 
+- name: Configuring CloudStack zones and clusters
+  import_tasks: configure-cloudstack.yml
