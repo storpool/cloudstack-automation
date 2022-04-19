@@ -30,6 +30,7 @@
       - /usr/bin/cloudstack-setup-databases
       - "cloud:{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}@localhost"
       - --deploy-as=root
+    creates: /etc/cloudstack/management/db.properties
 
 - name: Setting up CloudStack management
   become: true
