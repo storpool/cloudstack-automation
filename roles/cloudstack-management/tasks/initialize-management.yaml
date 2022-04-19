@@ -21,6 +21,7 @@
     name: mysqld
     state: restarted
     enabled: true
+  when: cloudstack_config.changed
 
 - name: Initializing CloudStack database
   become: true
