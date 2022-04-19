@@ -12,7 +12,7 @@
 
 - name: Setting fact if the user has API keys
   set_fact:
-    user_has_keys: "{{ get_user_keys.stdout | from_json | json_query(user_has_keys_json_query) | bool }}"
+    user_has_keys: "{{ get_user_keys.stdout | from_json | json_query('userkeys') | length == 2 }}"
 
 - name: Generating admin user keys
   command: "cmk registerUserKeys id={{ list_users.stdout | from_json | json_query(admin_user_id_query) }}"
