@@ -16,6 +16,7 @@
     start_ip: "{{ pod.start_ip }}"
     netmask: "{{ pod.network_prefix }}"
     gateway: "{{ pod.gateway }}"
+    zone: "{{ pod.zone }}"
     api_url: http://localhost:8080/client/api
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
