@@ -14,7 +14,7 @@
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
     start_ip: "{{ pod.start_ip }}"
-    netmask: "{{ pod.network_prefix }}"
+    netmask: "{{ pod.netmask }}"
     gateway: "{{ pod.gateway }}"
     zone: "{{ pod.zone }}"
     api_url: http://localhost:8080/client/api
