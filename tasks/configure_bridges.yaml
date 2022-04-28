@@ -1,7 +1,7 @@
 ---
 - name: Generating a list of peer StorPool clusters
   set_fact:
-    peer_clusters: "{{ sp_cluster_params[lab_environment] | dict2items(key_name='name', value_name='details') | rejectattr('name', 'eq', cloudstack_cluster) }}"
+    peer_clusters: "{{ sp_cluster_params[lab_environment] | dict2items(key_name='name', value_name='details') | selectattr('name', 'contains', 'cluster') | rejectattr('name', 'eq', cloudstack_cluster) }}"
 
 - name: Dumping the list of peer StorPool clusters
   debug:
