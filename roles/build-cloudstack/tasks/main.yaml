@@ -63,7 +63,7 @@
 - name: Building RPMs
   shell: |
     export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-    FLAGS=-DskipTests ./package.sh -d centos{{ ansible_distribution_major_version }} | tee /tmp/cloudstack-build.log
+    FLAGS="-DskipTests -T 2C" ./package.sh -d centos{{ ansible_distribution_major_version }} | tee /tmp/cloudstack-build.log
   args:
     chdir: "{{ ansible_user_dir }}/cloudstack-src/packaging/"
     executable: /bin/bash
