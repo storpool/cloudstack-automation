@@ -2,7 +2,9 @@
 collections:
   - awx.awx
   - ansible.posix
-  - community.general
+  - name: https://github.com/netcho/community.general
+    version: fix-one-service-module
+    type: git
   - community.crypto
   - ngine_io.cloudstack
   - netcho.opennebula
