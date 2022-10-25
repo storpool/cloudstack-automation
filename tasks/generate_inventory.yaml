@@ -19,7 +19,7 @@
 
 - name: Printing cloudstack_management group
   debug:
-    var: "{{ groups['cloudstack_management'] }}"
+    msg: "CloudStack management hosts: {{ groups['cloudstack_management'] }}"
     verbosity: 2
 
 - name: Generating storpool_nodes group
@@ -34,7 +34,7 @@
 
 - name: Printing storpool_nodes group
   debug:
-    var: "{{ groups['storpool_nodes'] }}"
+    msg: "StorPool server nodes: {{ groups['storpool_nodes'] }}"
     verbosity: 2
 
 - name: Generating storpool_server_nodes group
