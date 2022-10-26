@@ -2,7 +2,7 @@
   ngine_io.cloudstack.cs_zone:
     name: "{{ zone.name }}"
     dns1: "{{ zone.dns_server }}"
-    guest_cidr_address: "{{ zone.clients_prefix }}"
+    securitygroups_enabled: yes
     api_url: "http://{{ ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
@@ -13,10 +13,10 @@
 - name: Adding pods
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
+    zone: "{{ pod.zone }}"
     start_ip: "{{ pod.start_ip }}"
     netmask: "{{ pod.netmask }}"
     gateway: "{{ pod.gateway }}"
-    zone: "{{ pod.zone }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
