@@ -36,7 +36,7 @@
       - /usr/bin/cloudstack-setup-databases
       - "cloud:{{ cloudstack_db_password }}@localhost"
       - --deploy-as=root
-    creates: /etc/cloudstack/management/.ansible_db_initialized
+    creates: "{{ cloudstack_init_db_shadow_file_path }}"
   notify: Setup CloudStack management
 
 - name: Flushing handlers

@@ -9,3 +9,9 @@
   become: true
   command: /usr/bin/cloudstack-setup-management
   listen: Setup CloudStack management
+
+- name: Creating initialized database shadow file
+  become: yes
+  file:
+    path: "{{ cloudstack_init_db_shadow_file_path }}"
+  listen: Setup CloudStack management
