@@ -1,4 +1,4 @@
-- name: Adding zones
+- name: Adding CloudStack Zones
   ngine_io.cloudstack.cs_zone:
     name: "{{ zone.name }}"
     dns1: "{{ zone.dns_server }}"
@@ -10,12 +10,12 @@
   loop_control:
     loop_var: zone
 
-- name: Adding pods
+- name: Adding CloudStack Pods
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
     zone: "{{ pod.zone }}"
     start_ip: "{{ pod.start_ip }}"
-    netmask: "{{ pod.netmask }}"
+    netmask: "{{ pod.network_mask }}"
     gateway: "{{ pod.gateway }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
