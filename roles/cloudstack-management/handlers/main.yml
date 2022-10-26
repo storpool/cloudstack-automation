@@ -1,0 +1,12 @@
+- name: Restarting MySQL server
+  become: true
+  systemd:
+    name: mysqld
+    state: restarted
+    enabled: true
+  listen: Restart MySQL server
+
+- name: Setting up CloudStack management
+  become: true
+  command: /usr/bin/cloudstack-setup-management
+  listen: Setup CloudStack management

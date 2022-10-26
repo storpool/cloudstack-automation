@@ -13,25 +13,21 @@
     src: cloudstack.cnf
     dest: /etc/my.cnf.d/
     mode: 0644
-  register: cloudstack_config
+  notify: Restart MySQL server
 
-- name: Restarting MySQL server
-  become: true
-  systemd:
-    name: mysqld
-    state: restarted
-    enabled: true
-  when: cloudstack_config.changed
+- name: Checking if CloudStack database password is defined
+  assert:
+    that:
+      - cloudstack_db_password is defined
+      - cloudstack_db_password | length
+    fail_msg: Please define a database password to be used by CloudStack database user
 
 - name: Initializing CloudStack database
   become: true
   command:
     argv:
       - /usr/bin/cloudstack-setup-databases
-      - "cloud:{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}@localhost"
+      - "cloud:{{ cloudstack_db_password }}@localhost"
       - --deploy-as=root
-    creates: /etc/cloudstack/management/db.properties
-
-- name: Setting up CloudStack management
-  become: true
-  command: /usr/bin/cloudstack-setup-management
+    creates: /etc/cloudstack/management/.ansible_db_initialized
+  notify: Setup CloudStack management
