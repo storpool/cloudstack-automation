@@ -38,3 +38,6 @@
       - --deploy-as=root
     creates: /etc/cloudstack/management/.ansible_db_initialized
   notify: Setup CloudStack management
+
+- name: Flushing handlers
+  meta: flush_handlers
