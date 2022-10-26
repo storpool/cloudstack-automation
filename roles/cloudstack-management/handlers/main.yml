@@ -3,7 +3,6 @@
   systemd:
     name: mysqld
     state: restarted
-    enabled: true
   listen: Restart MySQL server
 
 - name: Setting up CloudStack management

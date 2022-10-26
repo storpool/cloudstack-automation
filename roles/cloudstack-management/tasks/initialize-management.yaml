@@ -15,6 +15,13 @@
     mode: 0644
   notify: Restart MySQL server
 
+- name: Starting MySQL server
+  become: true
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
 - name: Checking if CloudStack database password is defined
   assert:
     that:
