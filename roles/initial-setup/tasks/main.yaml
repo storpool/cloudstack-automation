@@ -30,3 +30,10 @@
     path: /usr/bin/python3
     link: /usr/bin/python
   when: ansible_os_family == "RedHat"
+
+- name: Enabling chronyd
+  become: yes
+  systemd:
+    name: chronyd
+    state: started
+    enabled: yes
