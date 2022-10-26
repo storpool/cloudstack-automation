@@ -30,5 +30,6 @@
   import_tasks: retrieve-api-keys.yaml
 
 - name: Configuring CloudStack zones and clusters
-  delegate_to: localhost
   import_tasks: configure-cloudstack.yml
+  delegate_to: localhost
+  delegate_facts: yes
