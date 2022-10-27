@@ -1,2 +1,3 @@
 ---
 cloudstack_init_db_shadow_file_path: /etc/cloudstack/management/.ansible_db_initialized
+cloudstack_hypervisor_username: cloudstack

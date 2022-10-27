@@ -23,3 +23,21 @@
   loop: "{{ sp_cluster_params[lab_environment]['cloudstack_pods'] }}"
   loop_control:
     loop_var: pod
+
+- name: Adding CloudStack clusters
+  ngine_io.cloudstack.cs_cluster:
+    name: "Cluster-{{ cluster_name }}"
+    zone: "{{ cluster_info.zone }}"
+    pod: "{{ cluster_info.pod }}"
+    cluster_type: CloudManaged
+    hypervisor: KVM
+    username: "{{ cloudstack_hypervisor_username }}"
+    api_url: "http://{{ ansible_host }}:8080/client/api"
+    api_key: "{{ cs_api_key }}"
+    api_secret: "{{ cs_secret_key }}"
+  loop: "{{ sp_cluster_params[lab_environment] | dict2items | selectattr('key', 'contains', 'cluster') | list }}"
+  loop_control:
+    loop_var: cluster_tuple
+  vars:
+    cluster_name: "{{ cluster_tuple.key | split ('_') | last | upper }}"
+    cluster_info: "{{ cluster_tuple.value }}"
