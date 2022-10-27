@@ -47,6 +47,29 @@
   loop_control:
     loop_var: zone
 
+- name: Enabling CloudStack physical networks
+  ngine_io.cloudstack.cs_physical_network:
+    name: physical-network1
+    zone: "{{ zone.name }}"
+    state: enabled
+    api_url: "http://{{ ansible_host }}:8080/client/api"
+    api_key: "{{ cs_api_key }}"
+    api_secret: "{{ cs_secret_key }}"
+  loop: "{{ sp_cluster_params[lab_environment]['cloudstack_zones'] }}"
+  loop_control:
+    loop_var: zone
+
+- name: Enabling CloudStack Zones
+  ngine_io.cloudstack.cs_zone:
+    name: "{{ zone.name }}"
+    state: enabled
+    api_url: "http://{{ ansible_host }}:8080/client/api"
+    api_key: "{{ cs_api_key }}"
+    api_secret: "{{ cs_secret_key }}"
+  loop: "{{ sp_cluster_params[lab_environment]['cloudstack_zones'] }}"
+  loop_control:
+    loop_var: zone
+
 - name: Adding CloudStack Pods
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
