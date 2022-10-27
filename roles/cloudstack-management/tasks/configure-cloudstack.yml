@@ -15,7 +15,7 @@
     name: physical-network1
     zone: "{{ zone.name }}"
     isolation_method: VLAN
-    broadcast_domain_range: ZONE
+    broadcast_domain_range: POD
     api_url: "http://{{ ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
