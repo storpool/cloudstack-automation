@@ -1,0 +1,15 @@
+- name: Enabling libvirtd tcp socket
+  become: yes
+  ansible.builtin.systemd:
+    name: libvirtd-tcp.socket
+    state: started
+    enabled: yes
+  listen: Enable libvirtd tcp socket
+
+- name: Restarting libvirtd
+  become: yes
+  ansible.builtin.systemd:
+    name: libvirtd.service
+    state: restarted
+    enabled: yes
+  listen: Restart libvirtd

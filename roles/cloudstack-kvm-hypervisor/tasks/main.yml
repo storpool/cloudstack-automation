@@ -1,0 +1,69 @@
+- name: Checking if CloudStack agent user password is defined
+  ansible.builtin.assert:
+    that:
+      - cloudstack_user_password is defined
+    fail_msg: Please set a secure password for the CloudStack agent user
+
+- name: Enabling Advanced virtualization repository
+  become: yes
+  ansible.builtin.dnf:
+    name: centos-release-advanced-virtualization
+    state: latest
+  when:
+    - ansible_os_family == 'RedHat'
+    - (ansible_distribution_major_version | int) >= 8
+
+- name: Installing CloudStack agent packages
+  become: yes
+  ansible.builtin.package:
+    name:
+      - cloudstack-agent
+      - libvirt
+    state: latest
+
+- name: Creating CloudStack agent user
+  become: yes
+  ansible.builtin.user:
+    name: "{{ cloudstack_agent_username }}"
+    password: "{{ cloudstack_user_password | password_hash('sha512') }}"
+    shell: /bin/bash
+
+- name: Allowing password-less sudo for CloudStack agent user
+  become: yes
+  ansible.builtin.blockinfile:
+    path: /etc/sudoers/cloudstack-user
+    block: |
+      cloudstack ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
+      defaults:cloudstack !requiretty
+    create: yes
+
+- name: Configuring libvirt
+  become: yes
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    line: "{{ line.new }}"
+    search_string: "{{ line.old }}"
+  loop:
+    - old: "listen_tls ="
+      new: "listen_tls = 0"
+    - old: "listen_tcp ="
+      new: "listen_tcp = 1"
+    - old: "tcp_port ="
+      new: 'tcp_port = "16509"'
+    - old: "mdns_adv ="
+      new: "mdns_adv = 0"
+  loop_control:
+    loop_var: line
+  notify:
+    - Enable libvirtd tcp socket
+    - Restart libvirtd
+
+- name: Configuring SELinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Configuring network interfaces
+  include_tasks: "configure_network_{{ ansible_os_family | lower }}.yml"
