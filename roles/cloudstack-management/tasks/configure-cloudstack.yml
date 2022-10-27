@@ -25,7 +25,7 @@
 
 - name: Adding CloudStack management traffic type to physical networks
   ngine_io.cloudstack.cs_traffic_type:
-    name: physical-network1
+    physical_network: physical-network1
     traffic_type: Management
     zone: "{{ zone.name }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
@@ -37,7 +37,7 @@
 
 - name: Adding CloudStack guest traffic type to physical networks
   ngine_io.cloudstack.cs_traffic_type:
-    name: physical-network1
+    physical_network: physical-network1
     traffic_type: Guest
     zone: "{{ zone.name }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
