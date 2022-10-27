@@ -51,8 +51,8 @@
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
     zone: "{{ pod.zone }}"
-    start_ip: "{{ pod.start_ip }}"
-    end_ip: "{{ pod.end_ip }}"
+    start_ip: "{{ pod.system_start_ip }}"
+    end_ip: "{{ pod.system_end_ip }}"
     netmask: "{{ pod.network_mask }}"
     gateway: "{{ pod.gateway }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
