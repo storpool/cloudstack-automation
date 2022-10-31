@@ -31,7 +31,7 @@
 - name: Allowing password-less sudo for CloudStack agent user
   become: yes
   ansible.builtin.blockinfile:
-    path: /etc/sudoers/cloudstack-user
+    path: /etc/sudoers.d/cloudstack-user
     block: |
       cloudstack ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
       defaults:cloudstack !requiretty
