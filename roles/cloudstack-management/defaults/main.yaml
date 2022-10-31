@@ -4,6 +4,8 @@ systemvm_template_version_overrides:
   4.13.1.0: 4.11.3
   4.16.0.0: 4.16.0
   4.16.1.0: 4.16.1
+  4.17.0.0: 4.17.0
+  4.17.1.0: 4.17.0
 
 nfs_export_directories:
   - /export/primary
