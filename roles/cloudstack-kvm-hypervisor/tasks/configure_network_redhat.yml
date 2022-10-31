@@ -1,0 +1,25 @@
+- name: Finding MAC address of the physical network
+  ansible.builtin.set_fact:
+    physical_interface_mac: "{{ (ansible_facts.node.nic | selectattr('name', 'eq', 'physical') | first)['mac'] }}"
+    available_interfaces: "{{ ansible_facts | dict2items | map('value') | select('mapping') | selectattr('macaddress', 'defined') | list }}"
+
+- name: Adding a cloudbr0 interface
+  become: yes
+  community.general.nmcli:
+    conn_name: cloudbr0
+    ifname: cloudbr0
+    type: bridge
+    state: present
+  when:
+    - (ansible_distribution_major_version | int) >= 8
+
+- name: Adding a slave interface to cloudbr0 interface
+  become: yes
+  community.general.nmcli:
+    conn_name: cloudbr0-slave
+    ifname: "{{ (available_interfaces | selectattr(''macaddress', 'eq', physical_interface_mac) | first)['device'] }}"
+    type: bridge-slave
+    master: cloudbr0
+    state: present
+  when:
+    - (ansible_distribution_major_version | int) >= 8

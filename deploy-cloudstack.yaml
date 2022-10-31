@@ -21,3 +21,9 @@
   become_method: sudo
   roles:
     - cloudstack-management
+
+- name: Installing CloudStack hosts
+  hosts: cluster_a1,cluster_a2,cluster_b1
+  become_method: sudo
+  roles:
+    - cloudstack-kvm-hypervisor

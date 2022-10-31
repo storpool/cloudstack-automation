@@ -59,6 +59,7 @@
     - Restart libvirtd
 
 - name: Configuring SELinux
+  become: yes
   ansible.posix.selinux:
     policy: targeted
     state: permissive
