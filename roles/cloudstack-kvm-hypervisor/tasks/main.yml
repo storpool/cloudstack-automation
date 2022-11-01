@@ -34,7 +34,7 @@
     path: /etc/sudoers.d/cloudstack-user
     block: |
       cloudstack ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
-      defaults:cloudstack !requiretty
+      Defaults:cloudstack !requiretty
     create: yes
 
 - name: Configuring libvirt
