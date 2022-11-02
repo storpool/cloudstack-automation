@@ -67,13 +67,27 @@
   args:
     chdir: "{{ ansible_user_dir }}/cloudstack-src/packaging/"
     executable: /bin/bash
+  register: build_packages_task
   when: clone_result.before == "null" or clone_result.after != clone_result.before
+
+- name: Check if building the packages succeeded
+  ansible.builtin.assert:
+    that:
+      - build_packages_task.rc == 0
+    fail_msg: Building CloudStack binary packages failed
 
 - name: Installing nginx
   become: true
   package:
     name: nginx
     state: present
+  notify: Start Nginx
+
+- name: Setting SELinux to permissive
+  become: true
+  selinux:
+    state: permissive
+    policy: targeted
 
 - name: Creating nginx server config directory
   become: true
@@ -86,7 +100,7 @@
   copy:
     src: repo.conf
     dest: /etc/nginx/conf.d/cloudstack-repo.conf
-  register: nginx_repo_config
+  notify: Restart Nginx
 
 - name: Copying RPMs to repository
   become: true
@@ -94,23 +108,4 @@
     src: "{{ ansible_user_dir }}/cloudstack-src/dist/rpmbuild/RPMS/x86_64/"
     remote_src: true
     dest: /var/www/repo/cloudstack/
-  register: copy_rpms
-
-- name: Creating an YUM repository
-  become: true
-  command: createrepo /var/www/repo/cloudstack/
-  when: copy_rpms.changed
-
-- name: Restarting nginx
-  become: true
-  systemd:
-    name: nginx
-    state: restarted
-    enabled: true
-  when: nginx_repo_config.changed
-
-- name: Setting SELinux to permissive
-  become: true
-  selinux:
-    state: permissive
-    policy: targeted
+  notify: Create YUM repository
