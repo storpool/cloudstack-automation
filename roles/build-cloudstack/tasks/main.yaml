@@ -75,6 +75,8 @@
     that:
       - build_packages_task.rc == 0
     fail_msg: Building CloudStack binary packages failed
+  when:
+    - build_packages_task.rc is defined
 
 - name: Installing nginx
   become: true
