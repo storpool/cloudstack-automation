@@ -33,8 +33,8 @@
   ansible.builtin.blockinfile:
     path: /etc/sudoers.d/cloudstack-user
     block: |
-      cloudstack ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
-      Defaults:cloudstack !requiretty
+      {{ cloudstack_agent_username }} ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
+      Defaults:{{ cloudstack_agent_username }} !requiretty
     create: yes
 
 - name: Configuring libvirt
