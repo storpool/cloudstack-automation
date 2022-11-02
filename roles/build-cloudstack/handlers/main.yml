@@ -9,6 +9,7 @@
 - name: Restarting Nginx
   become: yes
   ansible.builtin.systemd:
+    name: nginx
     state: restarted
   listen: Restart Nginx
 
