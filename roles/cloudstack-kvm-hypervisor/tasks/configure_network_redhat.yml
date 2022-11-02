@@ -17,7 +17,7 @@
   become: yes
   community.general.nmcli:
     conn_name: cloudbr0-slave
-    ifname: "{{ (available_interfaces | selectattr(''macaddress', 'eq', physical_interface_mac) | first)['device'] }}"
+    ifname: "{{ (available_interfaces | selectattr('macaddress', 'eq', physical_interface_mac) | first)['device'] }}"
     type: bridge-slave
     master: cloudbr0
     state: present
