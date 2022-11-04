@@ -32,7 +32,7 @@
       include_role:
         name: cloudstack-management
         apply:
-          delegate_to: cloudstack_management
+          delegate_to: "{{ groups['cloudstack_management'][0] }}"
         tasks_from: retrieve-api-keys.yaml
     - name: Adding hosts to respective Clusters
       delegate_to: localhost
