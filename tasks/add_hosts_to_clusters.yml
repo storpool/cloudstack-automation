@@ -2,12 +2,13 @@
   ngine_io.cloudstack.cs_host:
     name: "{{ hypervisor_name }}"
     hypervisor: KVM
+    url: "http://{{ hypervisor_address }}"
     username: cloudstack
     password: "{{ cloudstack_user_password }}"
     zone: "Zone-{{ cluster_name[0] | upper }}"
     pod: "Pod-{{ cluster_name[0] | upper }}"
     cluster: "Cluster-{{ cluster_name | upper }}"
-    api_url: "http://{{ hostvars[groups['cloudstack_management'][0]].ansible_host }}:8080/client/api"
+    api_url: "http://{{ hostvars[management_hostname].ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
   loop_control:
@@ -15,3 +16,5 @@
   loop: "{{ groups['cloudstack_hypervisors'] }}"
   vars:
     cluster_name: "{{ hostvars[hypervisor_name].user_attributes.cloudstack_cluster }}"
+    hypervisor_address: "{{ hostvars[hypervisor_name].ansible_host }}"
+    management_hostname: "{{ groups['cloudstack_management'][0] }}"
