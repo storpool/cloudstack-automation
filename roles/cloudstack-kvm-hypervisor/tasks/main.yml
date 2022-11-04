@@ -33,7 +33,7 @@
   ansible.builtin.blockinfile:
     path: /etc/sudoers.d/cloudstack-user
     block: |
-      {{ cloudstack_agent_username }} ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent
+      {{ cloudstack_agent_username }} ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent, /usr/share/cloudstack-common/scripts/util/keystore-setup
       Defaults:{{ cloudstack_agent_username }} !requiretty
     create: yes
 
