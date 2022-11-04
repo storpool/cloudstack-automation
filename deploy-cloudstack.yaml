@@ -27,3 +27,13 @@
   become_method: sudo
   roles:
     - cloudstack-kvm-hypervisor
+  post_tasks:
+    - name: Retrieving API Key
+      delegate_to: cloudstack_management
+      include_role:
+        name: cloudstack-management
+        tasks_from: retrieve-api-keys.yaml
+    - name: Adding hosts to respective Clusters
+      delegate_to: localhost
+      delegate_facts: yes
+      import_tasks: tasks/add_hosts_to_clusters.yml
