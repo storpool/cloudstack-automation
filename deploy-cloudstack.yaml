@@ -29,12 +29,14 @@
     - cloudstack-kvm-hypervisor
   post_tasks:
     - name: Retrieving API Key
+      run_once: yes
       include_role:
         name: cloudstack-management
         apply:
           delegate_to: "{{ groups['cloudstack_management'][0] }}"
         tasks_from: retrieve-api-keys.yaml
     - name: Adding hosts to respective Clusters
+      run_once: yes
       delegate_to: localhost
       delegate_facts: yes
       import_tasks: tasks/add_hosts_to_clusters.yml
