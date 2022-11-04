@@ -1,6 +1,7 @@
 - name: Adding Hypervisors
   ngine_io.cloudstack.cs_host:
     name: "{{ hypervisor_name }}"
+    hypervisor: KVM
     username: cloudstack
     password: "{{ cloudstack_user_password }}"
     zone: "Zone-{{ cluster_name[0] | upper }}"
