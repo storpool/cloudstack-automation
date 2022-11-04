@@ -29,9 +29,10 @@
     - cloudstack-kvm-hypervisor
   post_tasks:
     - name: Retrieving API Key
-      delegate_to: cloudstack_management
       include_role:
         name: cloudstack-management
+        apply:
+          delegate_to: cloudstack_management
         tasks_from: retrieve-api-keys.yaml
     - name: Adding hosts to respective Clusters
       delegate_to: localhost
