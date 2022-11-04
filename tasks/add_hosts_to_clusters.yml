@@ -12,5 +12,5 @@
   loop_control:
     loop_var: hypervisor_name
   loop: "{{ groups['cloudstack_hypervisors'] }}"
-  var:
+  vars:
     cluster_name: "{{ hostvars[hypervisor_name].user_attributes.cloudstack_cluster }}"
