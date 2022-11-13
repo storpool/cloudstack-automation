@@ -3,12 +3,21 @@
     physical_interface_mac: "{{ (nic | selectattr('name', 'eq', 'physical') | first)['mac'] }}"
     available_interfaces: "{{ ansible_facts | dict2items | map(attribute='value') | select('mapping') | selectattr('macaddress', 'defined') | list }}"
 
+- name: Setting host Pod network prefix
+  ansible.builtin.set_fact:
+    host_pod_prefix: "{{ (sp_cluster_params[lab_environment]['cloudstack_pods'] | selectattr('name', 'eq', user_attributes.cloudstack_cluster) | first)['prefix'] }}"
+
+- name: Setting cloudbr0 IP address
+  ansible.builtin.set_fact:
+    host_management_ip_address: "{{ host_pod_prefix | ansible.utils.ipaddr('1') }}"
+
 - name: Adding a cloudbr0 interface
   become: yes
   community.general.nmcli:
     conn_name: cloudbr0
     ifname: cloudbr0
     type: bridge
+    ip4: "{{ host_management_ip_address }}"
     state: present
   when:
     - (ansible_distribution_major_version | int) >= 8
