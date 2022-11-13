@@ -2,6 +2,7 @@
 collections:
   - awx.awx
   - ansible.posix
+  - ansible.utils
   - name: https://github.com/netcho/community.general
     version: fix-one-service-module
     type: git
