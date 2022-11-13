@@ -55,7 +55,6 @@
   loop_control:
     loop_var: line
   notify:
-    - Enable libvirtd tcp socket
     - Restart libvirtd
 
 - name: Configuring SELinux
