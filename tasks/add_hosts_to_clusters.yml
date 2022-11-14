@@ -19,14 +19,3 @@
     cluster_name: "{{ hostvars[hypervisor_name].user_attributes.cloudstack_cluster }}"
     hypervisor_address: "{{ hostvars[hypervisor_name].ansible_host }}"
     management_hostname: "{{ groups['cloudstack_management'][0] }}"
-
-- name: Enabling Hypervisors
-  ngine_io.cloudstack.cs_host:
-    name: "{{ hypervisor_name }}"
-    zone: "Zone-{{ cluster_name[0] | upper }}"
-    state: enabled
-  loop_control:
-    loop_var: hypervisor_name
-  loop: "{{ groups['cloudstack_hypervisors'] }}"
-  vars:
-    cluster_name: "{{ hostvars[hypervisor_name].user_attributes.cloudstack_cluster }}"
