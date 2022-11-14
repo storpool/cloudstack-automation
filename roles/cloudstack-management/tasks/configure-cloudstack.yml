@@ -74,10 +74,10 @@
   ngine_io.cloudstack.cs_pod:
     name: "{{ pod.name }}"
     zone: "{{ pod.zone }}"
-    start_ip: "{{ pod.prefix | ansible.utils.ipaddr('-10') | ansible.utils.ipaddr('address') }}"
-    end_ip: "{{ pod.prefix | ansible.utils.ipaddr('-2') | ansible.utils.ipaddr('address') }}"
+    start_ip: "{{ pod.prefix | ansible.utils.ipaddr('-11') | ansible.utils.ipaddr('address') }}"
+    end_ip: "{{ pod.prefix | ansible.utils.ipaddr('-3') | ansible.utils.ipaddr('address') }}"
     netmask: "{{ pod.prefix | ansible.utils.ipaddr('netmask') }}"
-    gateway: "{{ pod.prefix | ansible.utils.ipaddr('-1') | ansible.utils.ipaddr('address') }}"
+    gateway: "{{ pod.prefix | ansible.utils.ipaddr('-2') | ansible.utils.ipaddr('address') }}"
     api_url: "http://{{ ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
