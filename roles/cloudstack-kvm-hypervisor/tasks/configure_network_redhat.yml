@@ -10,10 +10,11 @@
 - name: Setting host Pod network prefix
   ansible.builtin.set_fact:
     host_pod_prefix: "{{ (sp_cluster_params[lab_environment]['cloudstack_pods'] | selectattr('name', 'eq', host_pod_name) | first)['prefix'] }}"
+    host_management_ip_offset: "{{ (-11 - (groups['cloudstack_hypervisors'].index(inventory_hostname))) | str }}"
 
 - name: Setting cloudbr0 IP address
   ansible.builtin.set_fact:
-    host_management_ip_address: "{{ host_pod_prefix | ansible.utils.ipaddr('1') }}"
+    host_management_ip_address: "{{ host_pod_prefix | ansible.utils.ipaddr(host_management_ip_offset) }}"
 
 - name: Adding a cloudbr0 interface
   become: yes
