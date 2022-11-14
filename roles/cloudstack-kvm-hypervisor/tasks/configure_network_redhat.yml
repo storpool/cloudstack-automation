@@ -3,9 +3,13 @@
     physical_interface_mac: "{{ (nic | selectattr('name', 'eq', 'physical') | first)['mac'] }}"
     available_interfaces: "{{ ansible_facts | dict2items | map(attribute='value') | select('mapping') | selectattr('macaddress', 'defined') | list }}"
 
+- name: Retrieving Pod name
+  ansible.builtin.set_fact:
+    host_pod_name: "{{ sp_cluster_params[lab_environment]['cluster_' + user_attributes.cloudstack_cluster]['pod'] }}"
+
 - name: Setting host Pod network prefix
   ansible.builtin.set_fact:
-    host_pod_prefix: "{{ (sp_cluster_params[lab_environment]['cloudstack_pods'] | selectattr('name', 'eq', user_attributes.cloudstack_cluster) | first)['prefix'] }}"
+    host_pod_prefix: "{{ (sp_cluster_params[lab_environment]['cloudstack_pods'] | selectattr('name', 'eq', host_pod_name) | first)['prefix'] }}"
 
 - name: Setting cloudbr0 IP address
   ansible.builtin.set_fact:
