@@ -12,7 +12,7 @@
     api_url: "http://{{ hostvars[management_hostname].ansible_host }}:8080/client/api"
     api_key: "{{ cs_api_key }}"
     api_secret: "{{ cs_secret_key }}"
-    api_timeout: 60
+    api_timeout: 240
   register: add_hypervisor_result
   loop_control:
     loop_var: hypervisor_name
