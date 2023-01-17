@@ -4,6 +4,7 @@
   gather_facts: false
   vars_files:
     - vars/os_image_user_map.yaml
+    - vars/oneflow_templates_map.yaml
   tasks:
     - name: Generating name and environment_id
       set_fact:
@@ -15,7 +16,7 @@
         verbosity: 2
     - name: Instantiating OpenNebula service
       one_service:
-        template_id: "{{ one_template_id }}"
+        template_id: "{{ oneflow_templates_map[env_type] }}"
         service_name: "{{ deployment_name }}"
         custom_attrs:
           ENVIRONMENT: "{{ lab_environment }}"
