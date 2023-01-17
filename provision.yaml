@@ -16,7 +16,7 @@
         verbosity: 2
     - name: Instantiating OpenNebula service
       one_service:
-        template_id: "{{ oneflow_templates_map[env_type]['id'] }}"
+        template_id: "{{ oneflow_templates_map[env_type]['template_id'] }}"
         service_name: "{{ deployment_name }}"
         custom_attrs:
           ENVIRONMENT: "{{ lab_environment }}"
