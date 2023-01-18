@@ -105,18 +105,18 @@
   loop_control:
     loop_var: zone
 
-- name: Creating Guest network
-  ngine_io.cloudstack.cs_network:
-    name: guestNetworkForBasicZone
-    network_offering: DefaultSharedNetworkOfferingWithSGService
-    start_ip: "{{ pod.prefix | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') }}"
-    end_ip: "{{ pod.prefix | ansible.utils.ipaddr('-12') | ansible.utils.ipaddr('address') }}"
-    netmask: "{{ pod.prefix | ansible.utils.ipaddr('netmask') }}"
-    gateway: "{{ pod.prefix | ansible.utils.ipaddr('-2') | ansible.utils.ipaddr('address') }}"
-    zone: "{{ pod.zone }}"
-    api_url: "http://{{ ansible_host }}:8080/client/api"
-    api_key: "{{ cs_api_key }}"
-    api_secret: "{{ cs_secret_key }}"
-  loop: "{{ sp_cluster_params[lab_environment]['cloudstack_pods'] }}"
-  loop_control:
-    loop_var: pod
+#- name: Creating Guest network
+#  ngine_io.cloudstack.cs_network:
+#    name: guestNetworkForBasicZone
+#    network_offering: DefaultSharedNetworkOfferingWithSGService
+#    start_ip: "{{ pod.prefix | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') }}"
+#    end_ip: "{{ pod.prefix | ansible.utils.ipaddr('-12') | ansible.utils.ipaddr('address') }}"
+#    netmask: "{{ pod.prefix | ansible.utils.ipaddr('netmask') }}"
+#    gateway: "{{ pod.prefix | ansible.utils.ipaddr('-2') | ansible.utils.ipaddr('address') }}"
+#    zone: "{{ pod.zone }}"
+#    api_url: "http://{{ ansible_host }}:8080/client/api"
+#    api_key: "{{ cs_api_key }}"
+#    api_secret: "{{ cs_secret_key }}"
+#  loop: "{{ sp_cluster_params[lab_environment]['cloudstack_pods'] }}"
+#  loop_control:
+#    loop_var: pod
