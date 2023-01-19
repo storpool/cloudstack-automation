@@ -33,3 +33,4 @@
   import_tasks: configure-cloudstack.yml
   delegate_to: localhost
   delegate_facts: yes
+  when: configure_cloudstack_post
