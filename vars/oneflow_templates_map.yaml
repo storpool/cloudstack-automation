@@ -3,4 +3,4 @@ oneflow_templates_map:
   dev:
     template_id: 205
   auto-test:
-    template_id: 248
+    template_id: 257
