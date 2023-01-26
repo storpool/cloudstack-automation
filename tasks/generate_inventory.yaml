@@ -2,10 +2,20 @@
 - name: Generating stack_uuid
   set_fact:
     stack_uuid: "{{ ('lab-cs-' + lab_environment + '-' + sp_version + '-' + cs_version + '-' + plugin_version) | to_uuid }}"
+  when:
+    - lab_environment is defined
 
 - name: Generating a list of hosts that are part of the environment
   set_fact:
     environment_hosts: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.stack_uuid', 'eq', stack_uuid) | list }}"
+  when:
+    - stack_uuid is defined
+
+- name: Generating a list of hosts that are part of the environment
+  set_fact:
+    environment_hosts: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.env_type', 'eq', 'autotest') | list }}"
+  when:
+    - stack_uuid is not defined
 
 - name: Generating cloudstack_management group
   add_host:
