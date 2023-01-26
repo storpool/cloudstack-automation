@@ -1,0 +1,17 @@
+---
+- name: Generating in-memory inventory
+  hosts: localhost
+  tasks:
+    - import_tasks: tasks/generate_inventory.yaml
+
+- name: Bootstrapping StorPool clusters
+  hosts: storpool_server_nodes
+  become_method: sudo
+  roles:
+    - initialize-drives
+  tasks:
+    - name: Restarting StorPool server instances
+      become: yes
+      ansible.builtin.command: /usr/sbin/storpool_ctl restart --servers --wait
+    - import_tasks: tasks/configure_bridges.yaml
+    - import_tasks: tasks/configure_template.yaml

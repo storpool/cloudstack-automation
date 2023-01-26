@@ -1,0 +1,17 @@
+---
+- name: Provision infrastructure
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/oneflow_templates_map.yaml
+  tasks:
+    - name: Instantiating OpenNebula service
+      one_service:
+        template_id: "{{ oneflow_templates_map[env_type]['template_id'] }}"
+        service_name: lab-ca-autotest
+        custom_attrs:
+          STORPOOL_VERSION: "{{ sp_version }}"
+          CLOUDSTACK_VERSION: "{{ cs_version }}"
+        unique: true
+        wait: true
+        wait_timeout: 600
