@@ -13,5 +13,8 @@
     - name: Restarting StorPool server instances
       become: yes
       ansible.builtin.command: /usr/sbin/storpool_ctl restart --servers --wait
+    - name: Setting corresponding CloudStack cluster name
+      set_fact:
+        cloudstack_cluster: "{{ 'cluster_' + user_attributes.cloudstack_cluster }}"
     - import_tasks: tasks/configure_bridges.yaml
     - import_tasks: tasks/configure_template.yaml
