@@ -11,14 +11,9 @@
   when:
     - stack_uuid is defined
 
-- name: Debug hosts
-  debug:
-    msg: "{{ hostvars | dict2items(key_name='name', value_name='vars') }}"
-    verbosity: 2
-
 - name: Generating a list of hosts that are part of the environment
   set_fact:
-    environment_hosts: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('vars.user_attributes.env_type', 'eq', 'autotest') | list }}"
+    environment_hosts: "{{ hostvars | dict2items(key_name='name', value_name='vars') | selectattr('name', 'contains', 'autotest') | list }}"
   when:
     - stack_uuid is not defined
 
