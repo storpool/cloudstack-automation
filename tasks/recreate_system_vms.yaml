@@ -1,0 +1,9 @@
+- name: Listing present System VMs
+  command: "cmk listSystemVms"
+  register: system_vms_list_result
+
+- name: Deleting old System VMs
+  command: "cmk destroySystemVm id={{ system_vm_id }}"
+  loop: "{{ (system_vms_list_result.stdout | from_json)['systemvm'] | map(attribute='id') | list }}"
+  loop_control:
+    loop_var: system_vm_id

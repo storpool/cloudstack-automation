@@ -18,3 +18,7 @@
         cloudstack_cluster: "{{ 'cluster_' + user_attributes.cloudstack_cluster }}"
     - import_tasks: tasks/configure_bridges.yaml
     - import_tasks: tasks/configure_template.yaml
+    - import_role:
+        name: cloudstack-management
+        tasks_from: retrieve-api-keys.yaml
+    - import_tasks: tasks/recreate_system_vms.yaml
