@@ -8,7 +8,7 @@
     - name: Instantiating OpenNebula service
       one_service:
         template_id: "{{ oneflow_templates_map[env_type]['template_id'] }}"
-        service_name: lab-ca-autotest
+        service_name: lab-cs-autotest
         custom_attrs:
           STORPOOL_VERSION: "{{ sp_version }}"
           CLOUDSTACK_VERSION: "{{ cs_version }}"
