@@ -1,3 +1,7 @@
+- name: Listing present Hosts
+  command: "cmk listHosts"
+  register: hosts_list_result
+
 - name: Reconnecting Hosts
   command: "cmk reconnectHost id={{ host_id }}"
   loop: "{{ (hosts_list_result.stdout | from_json)['host'] | map(attribute='id') | list }}"
@@ -23,7 +27,3 @@
   loop: "{{ (routers_list_result.stdout | from_json)['router'] | map(attribute='id') | list }}"
   loop_control:
     loop_var: router_id
-
-- name: Listing present Hosts
-  command: "cmk listHosts"
-  register: hosts_list_result
