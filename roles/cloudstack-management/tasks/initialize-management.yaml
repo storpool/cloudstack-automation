@@ -1,7 +1,18 @@
 ---
-- name: Installing cloudstack-management
+- name: Adding MySQL community yum repo
   become: true
-  package:
+  ansible.builtin.yum_repository:
+    name: mysql-community
+    description: MySQL Community connectors
+    baseurl: http://repo.mysql.com/yum/mysql-connectors-community/el/$releasever/$basearch/
+    gpgkey: http://repo.mysql.com/RPM-GPG-KEY-mysql
+    enabled: true
+    gpgcheck: true
+
+
+- name: Installing cloudstack-management  # noqa: package-latest
+  become: true
+  ansible.builtin.package:
     name:
       - cloudstack-management
       - mysql-server
@@ -9,21 +20,21 @@
 
 - name: Creating MariaDB drop-in config for CloudStack
   become: true
-  copy:
+  ansible.builtin.copy:
     src: cloudstack.cnf
     dest: /etc/my.cnf.d/
-    mode: 0644
+    mode: "0644"
   notify: Restart MySQL server
 
 - name: Starting MySQL server
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: mysqld
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Checking if CloudStack database password is defined
-  assert:
+  ansible.builtin.assert:
     that:
       - cloudstack_db_password is defined
       - cloudstack_db_password | length
@@ -31,7 +42,7 @@
 
 - name: Initializing CloudStack database
   become: true
-  command:
+  ansible.builtin.command:
     argv:
       - /usr/bin/cloudstack-setup-databases
       - "cloud:{{ cloudstack_db_password }}@localhost"
@@ -40,4 +51,4 @@
   notify: Setup CloudStack management
 
 - name: Flushing handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

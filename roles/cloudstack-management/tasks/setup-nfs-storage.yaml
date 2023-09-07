@@ -1,16 +1,17 @@
 ---
 - name: Creating storage directories
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ directory }}"
     state: directory
+    mode: "0755"
   loop: "{{ nfs_export_directories }}"
   loop_control:
     loop_var: directory
 
 - name: Exporting directories
   become: true
-  import_role:
+  ansible.builtin.import_role:
     name: geerlingguy.nfs
   vars:
     nfs_exports:

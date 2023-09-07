@@ -1,13 +1,13 @@
 ---
 - name: Initializing CloudStack management service
-  import_tasks: initialize-management.yaml
+  ansible.builtin.import_tasks: initialize-management.yaml
 
 - name: Setting up primary/secondary NFS storage
-  import_tasks: setup-nfs-storage.yaml
+  ansible.builtin.import_tasks: setup-nfs-storage.yaml
 
-- name: Downloading system VM templates
+- name: Downloading system VM templates  # noqa no-changed-when
   become: true
-  command:
+  ansible.builtin.command:
     argv:
       - /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt
       - -m
@@ -15,22 +15,22 @@
       - -h
       - kvm
       - -u
-      - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow2.bz2"
+      - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow2.bz2"  # noqa: yaml[line-length]
       - -F
   no_log: "{{ ansible_verbosity < 3 }}"
 
 - name: Downloading Cloudmonkey from GitHub
   become: true
-  get_url:
+  ansible.builtin.get_url:
     url: "https://github.com/apache/cloudstack-cloudmonkey/releases/download/{{ cloudmonkey_version }}/cmk.linux.x86-64"
     dest: /usr/bin/cmk
-    mode: 0755
+    mode: "0755"
 
 - name: Retrieving CloudStack Developer API keys
-  import_tasks: retrieve-api-keys.yaml
+  ansible.builtin.import_tasks: retrieve-api-keys.yaml
 
 - name: Configuring CloudStack zones and clusters
-  import_tasks: configure-cloudstack.yml
+  ansible.builtin.import_tasks: configure-cloudstack.yml
   delegate_to: localhost
-  delegate_facts: yes
+  delegate_facts: true
   when: configure_cloudstack_post

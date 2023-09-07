@@ -4,8 +4,8 @@
       - cloudstack_user_password is defined
     fail_msg: Please set a secure password for the CloudStack agent user
 
-- name: Enabling Advanced virtualization repository
-  become: yes
+- name: Enabling Advanced virtualization repository  # noqa: package-latest
+  become: true
   ansible.builtin.dnf:
     name: centos-release-advanced-virtualization
     state: latest
@@ -13,8 +13,8 @@
     - ansible_os_family == 'RedHat'
     - (ansible_distribution_major_version | int) >= 8
 
-- name: Installing CloudStack agent packages
-  become: yes
+- name: Installing CloudStack agent packages  # noqa: package-latest
+  become: true
   ansible.builtin.package:
     name:
       - cloudstack-agent
@@ -22,23 +22,23 @@
     state: latest
 
 - name: Creating CloudStack agent user
-  become: yes
+  become: true
   ansible.builtin.user:
     name: "{{ cloudstack_agent_username }}"
     password: "{{ cloudstack_user_password | password_hash('sha512') }}"
     shell: /bin/bash
 
 - name: Allowing password-less sudo for CloudStack agent user
-  become: yes
+  become: true
   ansible.builtin.blockinfile:
     path: /etc/sudoers.d/cloudstack-user
     block: |
       {{ cloudstack_agent_username }} ALL=NOPASSWD: /usr/bin/cloudstack-setup-agent, /usr/share/cloudstack-common/scripts/util/keystore-setup, /usr/share/cloudstack-common/scripts/util/keystore-cert-import
       Defaults:{{ cloudstack_agent_username }} !requiretty
-    create: yes
+    create: true
 
 - name: Configuring libvirt
-  become: yes
+  become: true
   ansible.builtin.lineinfile:
     path: /etc/libvirt/libvirtd.conf
     line: "{{ line.new }}"
@@ -58,7 +58,7 @@
     - Restart libvirtd
 
 - name: Configuring SELinux
-  become: yes
+  become: true
   ansible.posix.selinux:
     policy: targeted
     state: permissive
@@ -66,4 +66,4 @@
     - ansible_os_family == 'RedHat'
 
 - name: Configuring network interfaces
-  include_tasks: "configure_network_{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_tasks: "configure_network_{{ ansible_os_family | lower }}.yml"

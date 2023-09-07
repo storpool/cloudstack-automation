@@ -1,20 +1,36 @@
 ---
 - name: Getting cloudstack management hostname
-  set_fact:
+  ansible.builtin.set_fact:
     cloudstack_management_hostname: "{{ groups['cloudstack_management'] | first }}"
 
-- name: Adding entry in /etc/hosts to management node
+- name: Adding entry in /etc/hosts to management node for local CloudStack repository
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts
     line: "{{ (hostvars[cloudstack_management_hostname].nic | first).ip }} cloudstack.repo"
+  when:
+    - cloudstack_repo_url is undefined or cloudstack_repo_url == ""
 
-- name: Adding yum repository
+- name: Adding local CloudStack yum repository
   become: true
-  yum_repository:
+  ansible.builtin.yum_repository:
     file: cloudstack.repo
     name: apache-cloudstack
     description: Locally built Apache CloudStack
     baseurl: http://cloudstack.repo/
     enabled: true
     gpgcheck: false
+  when:
+    - cloudstack_repo_url is undefined or cloudstack_repo_url == ""
+
+- name: Adding offical CloudStack yum repository
+  become: true
+  ansible.builtin.yum_repository:
+    file: cloudstack.repo
+    name: apache-cloudstack
+    description: Locally built Apache CloudStack
+    baseurl: {{ cloudstack_repo_url }}
+    enabled: true
+    gpgcheck: false  # it seems that EL packages are not signed...
+  when:
+    - cloudstack_repo_url is defined and cloudstack_repo_url != ""

@@ -17,7 +17,7 @@
     host_management_ip_address: "{{ host_pod_prefix | ansible.utils.ipaddr(host_management_ip_offset) }}"
 
 - name: Adding a cloudbr0 interface
-  become: yes
+  become: true
   community.general.nmcli:
     conn_name: cloudbr0
     ifname: cloudbr0
@@ -28,7 +28,7 @@
     - (ansible_distribution_major_version | int) >= 8
 
 - name: Adding a slave interface to cloudbr0 interface
-  become: yes
+  become: true
   community.general.nmcli:
     conn_name: cloudbr0-slave
     ifname: "{{ (available_interfaces | selectattr('macaddress', 'eq', physical_interface_mac) | first)['device'] }}"
