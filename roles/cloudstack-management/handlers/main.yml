@@ -1,7 +1,7 @@
 - name: Restarting MySQL server
   become: true
   systemd:
-    name: mysqld
+    name: mysql
     state: restarted
   listen: Restart MySQL server
 

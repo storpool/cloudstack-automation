@@ -15,10 +15,9 @@
   ansible.builtin.package:
     name:
       - cloudstack-management
-      - mysql-server
     state: latest
 
-- name: Creating MariaDB drop-in config for CloudStack
+- name: Creating MySQL drop-in config for CloudStack
   become: true
   ansible.builtin.copy:
     src: cloudstack.cnf
@@ -29,7 +28,7 @@
 - name: Starting MySQL server
   become: true
   ansible.builtin.systemd:
-    name: mysqld
+    name: mysql
     state: started
     enabled: true
 

@@ -3,16 +3,16 @@
   hosts: localhost
   tasks:
     - import_tasks: tasks/generate_inventory.yaml
-  when:
-    - "'cloudstack_management' not in groups"
+      when:
+        - "'cloudstack_management' not in groups"
 
 - name: "Building CloudStack {{ cs_version }}"
   hosts: cloudstack_management
   become_method: sudo
   roles:
-    - build-cloudstack
-  when:
-    - cloudstack_repo_url is undefined or cloudstack_repo_url == ""
+    - role: build-cloudstack
+      when:
+        - build_cloudstack | bool
 
 - name: "Installing CloudStack repository"
   hosts: environment_hosts
@@ -33,14 +33,19 @@
     - cloudstack-kvm-hypervisor
   post_tasks:
     - name: Retrieving API Key
-      run_once: yes
+      run_once: true
       include_role:
         name: cloudstack-management
         apply:
           delegate_to: "{{ groups['cloudstack_management'][0] }}"
         tasks_from: retrieve-api-keys.yaml
+      when:
+        - configure_cloudstack | bool
     - name: Adding hosts to respective Clusters
-      run_once: yes
+      run_once: true
       delegate_to: localhost
-      delegate_facts: yes
+      delegate_facts: true
       import_tasks: tasks/add_hosts_to_clusters.yml
+      when:
+        - configure_cloudstack | bool
+

@@ -9,7 +9,7 @@
     path: /etc/hosts
     line: "{{ (hostvars[cloudstack_management_hostname].nic | first).ip }} cloudstack.repo"
   when:
-    - cloudstack_repo_url is undefined or cloudstack_repo_url == ""
+    - build_cloudstack | bool
 
 - name: Adding local CloudStack yum repository
   become: true
@@ -21,7 +21,7 @@
     enabled: true
     gpgcheck: false
   when:
-    - cloudstack_repo_url is undefined or cloudstack_repo_url == ""
+    - build_cloudstack | bool
 
 - name: Adding offical CloudStack yum repository
   become: true
@@ -29,8 +29,8 @@
     file: cloudstack.repo
     name: apache-cloudstack
     description: Locally built Apache CloudStack
-    baseurl: {{ cloudstack_repo_url }}
+    baseurl: "http://download.cloudstack.org/centos/{{ ansible_distribution_major_version }}/{{ cs_version.split('.')[:2] | join('.') }}/"
     enabled: true
     gpgcheck: false  # it seems that EL packages are not signed...
   when:
-    - cloudstack_repo_url is defined and cloudstack_repo_url != ""
+    - not build_cloudstack | bool

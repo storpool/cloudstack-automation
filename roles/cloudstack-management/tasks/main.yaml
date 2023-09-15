@@ -17,7 +17,7 @@
       - -u
       - "{{ systemvm_template_base_url }}/{{ systemvm_template_version_overrides[cs_version][:4] }}/systemvmtemplate-{{ systemvm_template_version_overrides[cs_version] }}-kvm.qcow2.bz2"  # noqa: yaml[line-length]
       - -F
-  no_log: "{{ ansible_verbosity < 3 }}"
+  #no_log: "{{ ansible_verbosity < 3 }}"
 
 - name: Downloading Cloudmonkey from GitHub
   become: true
